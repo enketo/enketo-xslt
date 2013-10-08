@@ -397,23 +397,18 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     </xsl:template>
 
     <xsl:template match="xf:item" mode="select-option">
+        <xsl:param name="tolerate-spaces" />
         <xsl:variable name="label_translations">
             <xsl:apply-templates select="xf:label" />
         </xsl:variable>
         <xsl:variable name="value">
-            <xsl:choose>
-                <xsl:when test="string(xf:value) and not(contains(xf:value, ' '))">
-                    <xsl:value-of select="xf:value" />
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:if test="contains(xf:value, ' ')">
-                        <xsl:message terminate="yes">ERROR: Select item found with a value that contains spaces!</xsl:message>
-                    </xsl:if>
-                    <xsl:if test="not(string(xf:value))">
-                        <xsl:message terminate="no">WARNING: Select item found without a value!</xsl:message>
-                    </xsl:if>
-                </xsl:otherwise>
-            </xsl:choose>
+            <xsl:value-of select="xf:value" />
+            <xsl:if test="not($tolerate-spaces) and contains(xf:value, ' ')">
+                <xsl:message terminate="yes">ERROR: (Multi-)select item found with a value that contains spaces!</xsl:message>
+            </xsl:if>
+            <xsl:if test="not(string(xf:value))">
+                <xsl:message terminate="no">WARNING: Select item found without a value!</xsl:message>
+            </xsl:if>
         </xsl:variable>
         <option>
             <xsl:if test="2 &lt; 1"><!-- IF READONLY? -->
@@ -574,15 +569,17 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <xsl:param name="nodeset"/>
         <xsl:param name="binding"/>
         <xsl:variable name="appearance" select="./@appearance" />
-        <xsl:variable name="options">
-            <xsl:apply-templates select="xf:item" mode="select-option" />
-        </xsl:variable>
         <xsl:variable name="type">
            <xsl:choose>
                <xsl:when test="local-name() = 'select'">select_multiple</xsl:when>
                <xsl:otherwise>select_one</xsl:otherwise>
            </xsl:choose>
         </xsl:variable>   
+        <xsl:variable name="options">
+            <xsl:apply-templates select="xf:item" mode="select-option">
+                <xsl:with-param name="tolerate-spaces" select="$type = 'select_one'" />
+            </xsl:apply-templates>
+        </xsl:variable>
         <label>
             <xsl:attribute name="class">
                 <xsl:if test="./@appearance">
