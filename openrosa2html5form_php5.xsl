@@ -709,6 +709,11 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <xsl:attribute name="name">
             <xsl:value-of select="$nodeset" />
         </xsl:attribute>
+        <xsl:if test="$html-input-type = 'radio'">
+            <xsl:attribute name="data-name">
+                <xsl:value-of select="$nodeset" />
+            </xsl:attribute>
+        </xsl:if>
         <xsl:if test="local-name() = 'item'">
             <xsl:attribute name="value">
                 <xsl:value-of select="./xf:value"/>
