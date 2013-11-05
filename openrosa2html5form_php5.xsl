@@ -98,7 +98,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 </script>
             </head>-->
             <root>
-	            <form class="jr" autocomplete="off">
+	            <form class="openrosa" autocomplete="off">
 	                <xsl:attribute name="id">
                         <xsl:choose>
                             <xsl:when test="/h:html/h:head/xf:model/xf:instance[1]/child::node()/@id">
@@ -156,7 +156,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 	                </xsl:if>
 	                <!-- create hidden input fields for preload items -->
 	                <xsl:if test="/h:html/h:head/xf:model/xf:bind[@jr:preload]" >
-	                    <fieldset id="jr-preload-items" style="display:none;">
+	                    <fieldset id="or-preload-items" style="display:none;">
 	                        <xsl:apply-templates select="/h:html/h:head/xf:model/xf:bind[@jr:preload]"/>
 	                    </fieldset>
 	                </xsl:if>
@@ -165,7 +165,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 
 	                <!-- create hidden input fields for calculated items -->
 	                <xsl:if test="/h:html/h:head/xf:model/xf:bind[@calculate]">
-	                    <fieldset id="jr-calculated-items" style="display:none;">
+	                    <fieldset id="or-calculated-items" style="display:none;">
 	                        <xsl:apply-templates select="/h:html/h:head/xf:model/xf:bind[@calculate]" />
 	                    </fieldset>
 	                </xsl:if>
@@ -208,12 +208,12 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 
         <fieldset>
             <xsl:attribute name="class">
-                <!-- only add jr-group if label is present or if it has a repeat as child-->
+                <!-- only add or-group if label is present or if it has a repeat as child-->
                 <xsl:if test="string(xf:label/@ref) or string(xf:label) or boolean(./xf:repeat)">
-                    <xsl:value-of select="'jr-group '" />
+                    <xsl:value-of select="'or-group '" />
                 </xsl:if>
                 <xsl:if test="$binding/@relevant">
-                    <xsl:value-of select="'jr-branch pre-init '"/>
+                    <xsl:value-of select="'or-branch pre-init '"/>
                 </xsl:if>
                 <xsl:call-template name="appearance" />
             </xsl:attribute>
@@ -268,10 +268,10 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 
         <fieldset>
             <xsl:attribute name="class">
-                <xsl:value-of select="'jr-repeat '" />
-                <!-- watch out jr-branch pre-init added to jr-group parent! -->
+                <xsl:value-of select="'or-repeat '" />
+                <!-- watch out or-branch pre-init added to or-group parent! -->
                 <!--<xsl:if test="$binding/@relevant">
-                    <xsl:value-of select="'jr-branch pre-init '"/>
+                    <xsl:value-of select="'or-branch pre-init '"/>
                 </xsl:if>-->
                 <xsl:call-template name="appearance" />
             </xsl:attribute>
@@ -307,7 +307,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 
     <xsl:template name="appearance">
         <xsl:if test="@appearance">
-             <xsl:value-of select="concat('jr-appearance-', translate(@appearance, $upper-case, $lower-case))"/>
+             <xsl:value-of select="concat('or-appearance-', translate(@appearance, $upper-case, $lower-case))"/>
         </xsl:if>
     </xsl:template>
 
@@ -338,7 +338,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <label>
             <xsl:attribute name="class">
                 <xsl:if test="(local-name() = 'input' or local-name() = 'upload') and $binding/@relevant">
-                    <xsl:value-of select="'jr-branch pre-init '"/>
+                    <xsl:value-of select="'or-branch pre-init '"/>
                 </xsl:if>
                 <xsl:if test="local-name() = 'item'">
                 	<xsl:value-of select="'clearfix '"/>
@@ -586,7 +586,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <xsl:call-template name="appearance" />
                 </xsl:if>
                 <xsl:if test="$binding/@relevant">
-                    <xsl:value-of select="' jr-branch pre-init '"/>
+                    <xsl:value-of select="' or-branch pre-init '"/>
                 </xsl:if>
             </xsl:attribute>
             <xsl:apply-templates select="$binding/@jr:constraintMsg" />
@@ -612,7 +612,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     </xsl:otherwise>
                 </xsl:choose>
             </select>            
-            <span class="jr-option-translations" style="display:none;">
+            <span class="or-option-translations" style="display:none;">
                 <xsl:if test="not(./xf:itemset) and $translated = 'true'">
                     <xsl:for-each select="exsl:node-set($options)/span">
                         <xsl:copy-of select="." />
@@ -640,7 +640,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:attribute name="class">
                 <xsl:value-of select="'restoring-sanity-to-legends '"/>
                 <xsl:if test="$binding/@relevant">
-                    <xsl:value-of select="'jr-branch pre-init '"/>
+                    <xsl:value-of select="'or-branch pre-init '"/>
                 </xsl:if>
             </xsl:attribute>
             <fieldset>
@@ -802,10 +802,10 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     <xsl:template match="xf:label | xf:hint | xf:bind/@jr:constraintMsg">
         <xsl:variable name="class">
             <xsl:if test="local-name() = 'constraintMsg'">
-                <xsl:value-of select="string('jr-constraint-msg')" />
+                <xsl:value-of select="string('or-constraint-msg')" />
             </xsl:if>
             <xsl:if test="local-name() = 'hint'">
-                <xsl:value-of select="string('jr-hint')" />
+                <xsl:value-of select="string('or-hint')" />
             </xsl:if>
             
         </xsl:variable>
@@ -880,7 +880,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <xsl:attribute name="class">
                         <xsl:value-of select="'trigger '"/>
                         <xsl:if test="$binding/@relevant">
-                            <xsl:value-of select="'jr-branch pre-init'"/>
+                            <xsl:value-of select="'or-branch pre-init'"/>
                         </xsl:if>
                     </xsl:attribute>
                     <xsl:attribute name="name">
@@ -900,7 +900,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     </xsl:template>
 
      <xsl:template match="xf:output">
-        <span class="jr-output">
+        <span class="or-output">
             <xsl:variable name="itext"
                     select="substring(substring-after(@value, 'itext('),2,string-length(substring-after(@value, 'itext('))-3)"/>
             <xsl:attribute name="data-value">
@@ -949,7 +949,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                                     <xsl:attribute name="class">
                                         <xsl:value-of select="concat($class, ' ')" />
                                         <xsl:if test="@form">
-                                            <xsl:value-of select="concat(' jr-form-', @form, ' ')" />
+                                            <xsl:value-of select="concat(' or-form-', @form, ' ')" />
                                         </xsl:if>
                                         <xsl:if test="@form = 'long' or (@form = 'short' and not(../@form = 'long')) or not(@form)">
                                             <xsl:value-of select="$active" />
@@ -962,7 +962,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                                 <xsl:call-template name="text-content" />
                             </span>
                         </xsl:when>
-                        <xsl:when test="@form = 'image' and not($class = 'jr-hint')" >
+                        <xsl:when test="@form = 'image' and not($class = 'or-hint')" >
                             <img>
                                 <xsl:attribute name="lang">
                                     <xsl:value-of select="$lang"/>
@@ -980,7 +980,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                                 <xsl:attribute name="alt">image</xsl:attribute>
                             </img>
                         </xsl:when>
-                        <xsl:when test="@form = 'audio' and not($class = 'jr-hint')">
+                        <xsl:when test="@form = 'audio' and not($class = 'or-hint')">
                             <audio controls="controls">
                                 <xsl:attribute name="lang">
                                     <xsl:value-of select="$lang"/>
@@ -998,7 +998,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                                 <xsl:text>Your browser does not support HTML5 audio.</xsl:text>
                             </audio>
                         </xsl:when>
-                        <xsl:when test="@form = 'video' and not($class = 'jr-hint')">
+                        <xsl:when test="@form = 'video' and not($class = 'or-hint')">
                             <video controls="controls">
                                 <xsl:attribute name="lang">
                                     <xsl:value-of select="$lang"/>
