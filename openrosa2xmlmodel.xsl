@@ -37,17 +37,23 @@ inside Enketo Smart Paper.
     <xsl:template match="/">
     	<root>
             <model>
-        	   <xsl:apply-templates select="//xf:model/xf:instance"/>
+        	   <xsl:apply-templates select="//xf:model/xf:instance" />
             </model>
         </root>
     </xsl:template>
 
-    <xsl:template match="node()|@*" name="identity">
-        <xsl:copy>
-            <xsl:apply-templates select="node()|@*"/>
-        </xsl:copy>
+    <xsl:template match="*">
+        <xsl:element name="{local-name()}">
+            <xsl:apply-templates select="node()|@*" />
+        </xsl:element>
     </xsl:template>
 
-    <xsl:template match="comment()"/>
+    <xsl:template match="@*">
+        <xsl:attribute name="{local-name()}" >
+            <xsl:value-of select="." />
+        </xsl:attribute>
+    </xsl:template>
+
+    <xsl:template match="comment()" />
 
 </xsl:stylesheet>
