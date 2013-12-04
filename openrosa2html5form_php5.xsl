@@ -206,12 +206,17 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <!--<xsl:variable name="binding" select="/h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset_used] | /h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset]"/>-->
         <xsl:variable name="binding" select="/h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset]"/>
 
-        <fieldset>
+        <section>
             <xsl:attribute name="class">
                 <!-- only add or-group if label is present or if it has a repeat as child-->
-                <xsl:if test="string(xf:label/@ref) or string(xf:label) or boolean(./xf:repeat)">
-                    <xsl:value-of select="'or-group '" />
-                </xsl:if>
+                <xsl:choose>
+                    <xsl:when test="string(xf:label/@ref) or string(xf:label) or boolean(./xf:repeat)">
+                        <xsl:value-of select="'or-group '" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="'or-group-data '" />
+                    </xsl:otherwise>
+                </xsl:choose>
                 <xsl:if test="$binding/@relevant">
                     <xsl:value-of select="'or-branch pre-init '"/>
                 </xsl:if>
@@ -239,7 +244,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:apply-templates select="*[not(self::xf:label or self::xf:hint)]"/>
             <xsl:text>
             </xsl:text>
-        </fieldset><xsl:comment>end of group <xsl:value-of select="@nodeset" /> </xsl:comment>
+        </section><xsl:comment>end of group <xsl:value-of select="@nodeset" /> </xsl:comment>
     </xsl:template>
 
     <xsl:template match="xf:repeat">
