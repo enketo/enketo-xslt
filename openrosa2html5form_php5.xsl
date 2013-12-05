@@ -68,13 +68,13 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:message terminate="yes">FATAL ERROR: exsl:node-set function is not available in this XSLT processor</xsl:message>
         </xsl:if>
         <xsl:if test="not(function-available('str:replace'))">
-            <xsl:message terminate="yes">FATAL ERROR: str:tokenize function is not available in this XSLT processor</xsl:message>
+            <xsl:message terminate="yes">FATAL ERROR: str:replace function is not available in this XSLT processor</xsl:message>
         </xsl:if>
         <xsl:if test="not(function-available('dyn:evaluate'))">
             <xsl:message terminate="yes">FATAL ERROR: dyn:evaluate function is not available in this XSLT processor</xsl:message>
         </xsl:if>
         <xsl:if test="not(function-available('str:tokenize'))">
-            <xsl:message terminate="yes">FATAL ERROR: dyn:evaluate function is not available in this XSLT processor</xsl:message>
+            <xsl:message terminate="yes">FATAL ERROR: str:tokenize function is not available in this XSLT processor</xsl:message>
         </xsl:if>
         <xsl:for-each select="/h:html/h:head/xf:model/xf:bind">
         	<xsl:if test="not(substring(./@nodeset, 1, 1) = '/')">
@@ -312,7 +312,10 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 
     <xsl:template name="appearance">
         <xsl:if test="@appearance">
-             <xsl:value-of select="concat('or-appearance-', translate(@appearance, $upper-case, $lower-case))"/>
+            <xsl:variable name="appearances" select="str:tokenize(@appearance)" />
+            <xsl:for-each select="exsl:node-set($appearances)">
+                <xsl:value-of select="concat('or-appearance-', normalize-space(translate(., $upper-case, $lower-case)), ' ')"/>
+            </xsl:for-each>
         </xsl:if>
     </xsl:template>
 
