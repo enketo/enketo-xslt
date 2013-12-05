@@ -342,6 +342,9 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
        
         <label>
             <xsl:attribute name="class">
+                <xsl:if test="local-name() = 'input' or local-name() = 'upload'">
+                    <xsl:value-of select="'question '"/>
+                </xsl:if>
                 <xsl:if test="(local-name() = 'input' or local-name() = 'upload') and $binding/@relevant">
                     <xsl:value-of select="'or-branch pre-init '"/>
                 </xsl:if>
@@ -458,7 +461,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <xsl:param name="binding"/>
         <xsl:choose>
             <xsl:when test="$binding">
-                <label class="itemset-template">
+                <label class="itemset-template question">
                     <xsl:attribute name="data-items-path">
                         <xsl:value-of select="@nodeset"/>
                     </xsl:attribute>
@@ -473,7 +476,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 </label>
             </xsl:when>
             <xsl:otherwise>
-                <option class="itemset-template" value="">
+                <option class="itemset-template question" value="">
                     <xsl:attribute name="data-items-path">
                         <xsl:value-of select="@nodeset"/>
                     </xsl:attribute>
@@ -587,6 +590,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         </xsl:variable>
         <label>
             <xsl:attribute name="class">
+                <xsl:value-of select="'question '"/>
                 <xsl:if test="./@appearance">
                     <xsl:call-template name="appearance" />
                 </xsl:if>
@@ -643,7 +647,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         -->
         <fieldset>
             <xsl:attribute name="class">
-                <xsl:value-of select="'restoring-sanity-to-legends '"/>
+                <xsl:value-of select="'question '"/>
                 <xsl:if test="$binding/@relevant">
                     <xsl:value-of select="'or-branch pre-init '"/>
                 </xsl:if>
