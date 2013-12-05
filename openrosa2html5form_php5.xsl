@@ -654,13 +654,11 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 <xsl:if test="$binding/@relevant">
                     <xsl:value-of select="'or-branch pre-init '"/>
                 </xsl:if>
+                <xsl:if test="@appearance">
+                    <xsl:call-template name="appearance" />
+                </xsl:if>
             </xsl:attribute>
             <fieldset>
-                <xsl:if test="@appearance">
-                    <xsl:attribute name="class">
-                        <xsl:call-template name="appearance" />
-                    </xsl:attribute>
-                </xsl:if>
                 <!--<xsl:if test="./xf:itemset">
                     <xsl:attribute name="data-itemset"/>
                 </xsl:if>-->
