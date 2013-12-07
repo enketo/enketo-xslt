@@ -479,7 +479,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 </label>
             </xsl:when>
             <xsl:otherwise>
-                <option class="itemset-template question" value="">
+                <option class="itemset-template" value="">
                     <xsl:attribute name="data-items-path">
                         <xsl:value-of select="@nodeset"/>
                     </xsl:attribute>
