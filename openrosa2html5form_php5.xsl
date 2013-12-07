@@ -376,7 +376,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             </xsl:variable>
             <xsl:variable name="element">
                 <xsl:choose>
-                    <xsl:when test="$binding/@type = 'string' and $appearance = 'multi-line' or $appearance = 'multiline' or $appearance = 'text-area' or $appearance = 'big' or $appearance = 'big-text' or $appearance = 'textarea'">
+                    <xsl:when test="$binding/@type = 'string' and contains($appearance, 'multi-line') or contains($appearance, 'multiline') or contains($appearance, 'text-area') or contains($appearance, 'textarea')">
                         <xsl:value-of select="string('textarea')" />
                     </xsl:when>
                     <xsl:otherwise>
@@ -464,7 +464,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <xsl:param name="binding"/>
         <xsl:choose>
             <xsl:when test="$binding">
-                <label class="itemset-template question">
+                <label class="itemset-template">
                     <xsl:attribute name="data-items-path">
                         <xsl:value-of select="@nodeset"/>
                     </xsl:attribute>
