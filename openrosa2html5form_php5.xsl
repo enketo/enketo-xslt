@@ -98,7 +98,13 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 </script>
             </head>-->
             <root>
-	            <form class="or" autocomplete="off" novalidate="novalidate">
+	            <form autocomplete="off" novalidate="novalidate">
+                    <xsl:attribute name="class">
+                        <xsl:value-of select="'or clearfix'" />
+                        <xsl:if test="/h:html/h:body/@class">
+                            <xsl:value-of select="concat(' ', /h:html/h:body/@class)" />
+                        </xsl:if>
+                    </xsl:attribute>
 	                <xsl:attribute name="id">
                         <xsl:choose>
                             <xsl:when test="/h:html/h:head/xf:model/xf:instance[1]/child::node()/@id">
