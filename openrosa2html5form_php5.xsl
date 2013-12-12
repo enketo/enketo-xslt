@@ -360,6 +360,9 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 <xsl:if test="local-name() = 'item'">
                 	<xsl:value-of select="'clearfix '"/>
                 </xsl:if>
+                <xsl:if test="local-name() != 'item'">
+                    <xsl:value-of select="'non-select '"/>
+                </xsl:if>
                 <xsl:call-template name="appearance" />
             </xsl:attribute>
 
