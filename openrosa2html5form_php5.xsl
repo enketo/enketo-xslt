@@ -351,8 +351,11 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
        
         <label>
             <xsl:attribute name="class">
-                <xsl:if test="local-name() = 'input' or local-name() = 'upload'">
+                <xsl:if test="(local-name() = 'input' or local-name() = 'upload') and not($binding/@readonly)">
                     <xsl:value-of select="'question '"/>
+                </xsl:if>
+                <xsl:if test="(local-name() = 'input' or local-name() = 'upload') and $binding/@readonly">
+                    <xsl:value-of select="'note '"/>
                 </xsl:if>
                 <xsl:if test="(local-name() = 'input' or local-name() = 'upload') and $binding/@relevant">
                     <xsl:value-of select="'or-branch pre-init '"/>
