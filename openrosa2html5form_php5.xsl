@@ -682,18 +682,20 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <xsl:text>
                     </xsl:text>
                 </legend>
-                <xsl:choose>
-                    <xsl:when test="not(./xf:itemset)">
-                        <xsl:apply-templates select="xf:item" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:apply-templates select="xf:itemset" mode="templates">
-                            <xsl:with-param name="nodeset" select="$nodeset" />
-                            <xsl:with-param name="binding" select="$binding" />
-                        </xsl:apply-templates>
-                        <xsl:apply-templates select="xf:itemset" mode="labels"/>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <div class="option-wrapper">
+                    <xsl:choose>
+                        <xsl:when test="not(./xf:itemset)">
+                            <xsl:apply-templates select="xf:item" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:apply-templates select="xf:itemset" mode="templates">
+                                <xsl:with-param name="nodeset" select="$nodeset" />
+                                <xsl:with-param name="binding" select="$binding" />
+                            </xsl:apply-templates>
+                            <xsl:apply-templates select="xf:itemset" mode="labels"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </div>
             </fieldset>
         </fieldset>
     </xsl:template>
