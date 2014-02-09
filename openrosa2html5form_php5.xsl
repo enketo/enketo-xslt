@@ -160,14 +160,15 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 	                        <xsl:call-template name="languages" />
 	                    </select>
 	                </xsl:if>
-	                <!-- create hidden input fields for preload items -->
-	                <xsl:if test="/h:html/h:head/xf:model/xf:bind[@jr:preload]" >
-	                    <fieldset id="or-preload-items" style="display:none;">
-	                        <xsl:apply-templates select="/h:html/h:head/xf:model/xf:bind[@jr:preload]"/>
-	                    </fieldset>
-	                </xsl:if>
 
 	                <xsl:apply-templates />
+
+                    <!-- create hidden input fields for preload items -->
+                    <xsl:if test="/h:html/h:head/xf:model/xf:bind[@jr:preload]" >
+                        <fieldset id="or-preload-items" style="display:none;">
+                            <xsl:apply-templates select="/h:html/h:head/xf:model/xf:bind[@jr:preload]"/>
+                        </fieldset>
+                    </xsl:if>
 
 	                <!-- create hidden input fields for calculated items -->
                     <!-- the template will exclude those that have an input field -->
@@ -1002,7 +1003,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                                         <xsl:if test="@form">
                                             <xsl:value-of select="concat(' or-form-', @form, ' ')" />
                                         </xsl:if>
-                                        <xsl:if test="@form = 'long' or (@form = 'short' and not(../@form = 'long')) or not(@form)">
+                                        <xsl:if test="@form = 'long' or (@form = 'short' and not(../node()/@form = 'long')) or not(@form)">
                                             <xsl:value-of select="$active" />
                                         </xsl:if>
                                     </xsl:attribute>
