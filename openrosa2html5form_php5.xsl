@@ -118,6 +118,21 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                             </xsl:otherwise>
                         </xsl:choose>
 	                </xsl:attribute>
+                    <xsl:if test="/h:html/h:head/xf:model/xf:submission/@action">
+                        <xsl:attribute name="action">
+                            <xsl:value-of select="/h:html/h:head/xf:model/xf:submission/@action"/>
+                        </xsl:attribute>
+                    </xsl:if>
+                    <xsl:if test="/h:html/h:head/xf:model/xf:submission/@method">
+                        <xsl:attribute name="method">
+                            <xsl:value-of select="/h:html/h:head/xf:model/xf:submission/@method"/>
+                        </xsl:attribute>
+                    </xsl:if>
+                    <xsl:if test="/h:html/h:head/xf:model/xf:submission/@base64RsaPublicKey">
+                        <xsl:attribute name="data-base64RsaPublicKey">
+                            <xsl:value-of select="/h:html/h:head/xf:model/xf:submission/@base64RsaPublicKey"/>
+                        </xsl:attribute>
+                    </xsl:if>
 	                <xsl:text>&#10;</xsl:text>
 	                <xsl:comment>This form was created by transforming a OpenRosa-flavored (X)Form using an XSLT sheet created by Enketo LLC.</xsl:comment>
                     <section class="form-logo">
