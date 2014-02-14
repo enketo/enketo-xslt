@@ -387,9 +387,9 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <xsl:if test="local-name() = 'bind'">
                         <xsl:value-of select="'calculation '"/>
                     </xsl:if>
-                    <!--<xsl:if test="local-name() = 'item'">
-                    	<xsl:value-of select="'clearfix '"/>
-                    </xsl:if>-->
+                    <xsl:if test="local-name() = 'item'">
+                    	<xsl:value-of select="concat($binding/@type, ' ')"/>
+                    </xsl:if>
                     <xsl:if test="local-name() != 'item'">
                         <xsl:value-of select="'non-select '"/>
                     </xsl:if>
@@ -504,7 +504,10 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <xsl:param name="binding"/>
         <xsl:choose>
             <xsl:when test="$binding">
-                <label class="itemset-template">
+                <label>
+                    <xsl:attribute name="class">
+                        <xsl:value-of select="concat('itemset-template ', $binding/@type)" />
+                    </xsl:attribute>
                     <xsl:attribute name="data-items-path">
                         <xsl:value-of select="@nodeset"/>
                     </xsl:attribute>
