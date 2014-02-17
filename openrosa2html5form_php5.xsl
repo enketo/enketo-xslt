@@ -562,6 +562,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                         <xsl:variable name="id" select="./*[name()=$label-node-name]" />
                         <xsl:call-template name="translations">
                             <xsl:with-param name="id" select="$id"/>
+                            <xsl:with-param name="class" select="'option-label'"/>
                         </xsl:call-template>
                     </xsl:for-each>
                 </xsl:when>
