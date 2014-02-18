@@ -998,7 +998,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 
     <xsl:template name="translations">
         <xsl:param name="id"/>
-        <xsl:param name="class"/>
+        <xsl:param name="class"/>        
         <xsl:for-each select="/h:html/h:head/xf:model/xf:itext/xf:translation/xf:text[@id=$id]">
             <xsl:variable name="lang" select="ancestor::xf:translation/@lang"/>
             <xsl:variable name="active">
@@ -1031,6 +1031,10 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                             </span>
                         </xsl:when>
                         <xsl:when test="@form = 'image' and not($class = 'or-hint')" >
+                            <!-- add empty span for option-labels that have no text, just an image, to support the new radio buttons and checkboxes -->
+                            <xsl:if test="$class='option-label' and not(./*[@form='short']) and not(./*[@form='long']) and not(./*[not(@form)])" >
+                                <span class="option-label"> </span>
+                            </xsl:if>
                             <img>
                                 <xsl:attribute name="lang">
                                     <xsl:value-of select="$lang"/>
