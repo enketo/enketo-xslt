@@ -1346,7 +1346,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 >number</xsl:when>
             <xsl:when test="$xml_type = 'string'">text</xsl:when>
             <!-- temporary -->
-            <xsl:when test="$xml_type = 'barcode' or $xml_type = 'geopoint'" >
+            <xsl:when test="$xml_type = 'barcode' or $xml_type = 'geopoint' or $xml_type = 'geotrace' or $xml_type = 'geoshape'" >
                 <xsl:value-of select="string('text')" />
             </xsl:when>
             <!-- ********* -->
