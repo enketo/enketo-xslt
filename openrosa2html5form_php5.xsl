@@ -233,8 +233,9 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:attribute name="class">
                 <!-- only add or-group if label is present or if it has a repeat as child-->
                 <xsl:choose>
-                    <xsl:when test="string(xf:label/@ref) or string(xf:label) or boolean(./xf:repeat)">
+                    <xsl:when test="string(./xf:label/@ref) or string(./xf:label)">
                         <xsl:value-of select="'or-group '" />
+                        <xsl:value-of select="concat(' length: ', string-length(./xf:label))" />
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="'or-group-data '" />
