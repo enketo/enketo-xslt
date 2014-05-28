@@ -1004,103 +1004,108 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:variable name="active">
                 <xsl:if test="string($lang) = string($default-lang)">active</xsl:if>
             </xsl:variable>
-            <xsl:for-each select="./xf:value" >
-                    <xsl:choose>
-                        <xsl:when test="@form = 'long' or @form = 'short' or not(@form) ">
-                            <span>
-                                <!--<xsl:if test="string($lang)" >-->
-                                    <xsl:attribute name="lang">
-                                        <xsl:value-of select="$lang"/>
-                                    </xsl:attribute>
-                                <!--</xsl:if>-->
-                                <xsl:if test="string($class) or @form or string($active)">
-                                    <xsl:attribute name="class">
-                                        <xsl:value-of select="concat($class, ' ')" />
-                                        <xsl:if test="@form">
-                                            <xsl:value-of select="concat(' or-form-', @form, ' ')" />
-                                        </xsl:if>
-                                        <xsl:if test="@form = 'long' or (@form = 'short' and not(../node()/@form = 'long')) or not(@form)">
-                                            <xsl:value-of select="$active" />
-                                        </xsl:if>
-                                    </xsl:attribute>
-                                </xsl:if>
-                                <xsl:attribute name="data-itext-id">
-                                    <xsl:value-of select="$id"/>
-                                </xsl:attribute>
-                                <xsl:call-template name="text-content" />
-                            </span>
-                        </xsl:when>
-                        <xsl:when test="@form = 'image' and not($class = 'or-hint')" >
-                            <!-- add empty span for option-labels that have no text, just an image, to support the new radio buttons and checkboxes -->
-                            <xsl:if test="$class='option-label' and not(./*[@form='short']) and not(./*[@form='long']) and not(./*[not(@form)])" >
-                                <span>
-                                    <xsl:attribute name="lang">
-                                        <xsl:value-of select="$lang"/>
-                                    </xsl:attribute>
-                                    <xsl:attribute name="class">
-                                        <xsl:value-of select="'option-label '"/>
-                                        <xsl:if test="string($active)">
-                                            <xsl:value-of select="$active"/>
-                                        </xsl:if>
-                                    </xsl:attribute>
-                                    <xsl:text>
-                                    </xsl:text>
-                                </span>
+            <xsl:variable name="notext">
+                <xsl:value-of select="string-length(./xf:value[@form='long' or @form='short' or not(@form)]) = 0" /> 
+            </xsl:variable>      
+            <!-- text labels get priority -->
+            <xsl:for-each select="./xf:value[@form='long' or @form='short' or not(@form)]" > 
+                <span>
+                    <!--<xsl:if test="string($lang)" >-->
+                        <xsl:attribute name="lang">
+                            <xsl:value-of select="$lang"/>
+                        </xsl:attribute>
+                    <!--</xsl:if>-->
+                    <xsl:if test="string($class) or @form or string($active)">
+                        <xsl:attribute name="class">
+                            <xsl:value-of select="concat($class, ' ')" />
+                            <xsl:if test="@form">
+                                <xsl:value-of select="concat(' or-form-', @form, ' ')" />
                             </xsl:if>
-                            <img>
+                            <xsl:if test="@form = 'long' or (@form = 'short' and not(../node()/@form = 'long')) or not(@form)">
+                                <xsl:value-of select="$active" />
+                            </xsl:if>
+                        </xsl:attribute>
+                    </xsl:if>
+                    <xsl:attribute name="data-itext-id">
+                        <xsl:value-of select="$id"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="text-content" />
+                </span>
+            </xsl:for-each>
+            <!-- media labels in document order -->
+            <xsl:for-each select="./xf:value[@form = 'image' or @form = 'video' or @form = 'audio' and not($class = 'or-hint')]" >
+                <xsl:choose>
+                    <xsl:when test="@form = 'image'" >
+                        <!-- add empty span for option-labels that have no text, just an image, to support the new radio buttons and checkboxes -->
+                        <xsl:if test="$notext = 'true'" >
+                            <span>
                                 <xsl:attribute name="lang">
                                     <xsl:value-of select="$lang"/>
                                 </xsl:attribute>
-                                <xsl:if test="string($active)">
-                                    <xsl:attribute name="class">
-                                        <xsl:value-of select="$active" />
-                                    </xsl:attribute>
-                                </xsl:if>
-                                <xsl:attribute name="src">
-                                    <xsl:call-template name="strip_namespace_media">
-                                        <xsl:with-param name="string" select="." />
-                                    </xsl:call-template>
+                                <xsl:attribute name="class">
+                                    <xsl:value-of select="'option-label '"/>
+                                    <xsl:if test="string($active)">
+                                        <xsl:value-of select="$active"/>
+                                    </xsl:if>
                                 </xsl:attribute>
-                                <xsl:attribute name="alt">image</xsl:attribute>
-                            </img>
-                        </xsl:when>
-                        <xsl:when test="@form = 'audio' and not($class = 'or-hint')">
-                            <audio controls="controls">
-                                <xsl:attribute name="lang">
-                                    <xsl:value-of select="$lang"/>
+                                <xsl:text>
+                                </xsl:text>
+                            </span>
+                        </xsl:if>
+                        <img>
+                            <xsl:attribute name="lang">
+                                <xsl:value-of select="$lang"/>
+                            </xsl:attribute>
+                            <xsl:if test="string($active)">
+                                <xsl:attribute name="class">
+                                    <xsl:value-of select="$active" />
                                 </xsl:attribute>
-                                <xsl:if test="string($active)">
-                                    <xsl:attribute name="class">
-                                        <xsl:value-of select="$active" />
-                                    </xsl:attribute>
-                                </xsl:if>
-                                <xsl:attribute name="src">
-                                    <xsl:call-template name="strip_namespace_media">
-                                        <xsl:with-param name="string" select="." />
-                                    </xsl:call-template>
+                            </xsl:if>
+                            <xsl:attribute name="src">
+                                <xsl:call-template name="strip_namespace_media">
+                                    <xsl:with-param name="string" select="." />
+                                </xsl:call-template>
+                            </xsl:attribute>
+                            <xsl:attribute name="alt">image</xsl:attribute>
+                        </img>
+                    </xsl:when>
+                    <xsl:when test="@form = 'audio'">
+                        <audio controls="controls">
+                            <xsl:attribute name="lang">
+                                <xsl:value-of select="$lang"/>
+                            </xsl:attribute>
+                            <xsl:if test="string($active)">
+                                <xsl:attribute name="class">
+                                    <xsl:value-of select="$active" />
                                 </xsl:attribute>
-                                <xsl:text>Your browser does not support HTML5 audio.</xsl:text>
-                            </audio>
-                        </xsl:when>
-                        <xsl:when test="@form = 'video' and not($class = 'or-hint')">
-                            <video controls="controls">
-                                <xsl:attribute name="lang">
-                                    <xsl:value-of select="$lang"/>
+                            </xsl:if>
+                            <xsl:attribute name="src">
+                                <xsl:call-template name="strip_namespace_media">
+                                    <xsl:with-param name="string" select="." />
+                                </xsl:call-template>
+                            </xsl:attribute>
+                            <xsl:text>Your browser does not support HTML5 audio.</xsl:text>
+                        </audio>
+                    </xsl:when>
+                    <xsl:when test="@form = 'video'">
+                        <video controls="controls">
+                            <xsl:attribute name="lang">
+                                <xsl:value-of select="$lang"/>
+                            </xsl:attribute>
+                            <xsl:if test="string($active)">
+                                <xsl:attribute name="class">
+                                    <xsl:value-of select="$active" />
                                 </xsl:attribute>
-                                <xsl:if test="string($active)">
-                                    <xsl:attribute name="class">
-                                        <xsl:value-of select="$active" />
-                                    </xsl:attribute>
-                                </xsl:if>
-                                <xsl:attribute name="src">
-                                    <xsl:call-template name="strip_namespace_media">
-                                        <xsl:with-param name="string" select="." />
-                                    </xsl:call-template>
-                                </xsl:attribute>
-                                <xsl:text>Your browser does not support HTML5 video.</xsl:text>
-                            </video>
-                        </xsl:when>
-                    </xsl:choose>
+                            </xsl:if>
+                            <xsl:attribute name="src">
+                                <xsl:call-template name="strip_namespace_media">
+                                    <xsl:with-param name="string" select="." />
+                                </xsl:call-template>
+                            </xsl:attribute>
+                            <xsl:text>Your browser does not support HTML5 video.</xsl:text>
+                        </video>
+                    </xsl:when>
+                </xsl:choose>
             </xsl:for-each>
         </xsl:for-each>
     </xsl:template>
