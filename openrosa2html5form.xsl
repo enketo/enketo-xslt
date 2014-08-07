@@ -1021,7 +1021,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                             <xsl:if test="@form">
                                 <xsl:value-of select="concat(' or-form-', @form, ' ')" />
                             </xsl:if>
-                            <xsl:if test="@form = 'long' or (@form = 'short' and not(../node()/@form = 'long')) or not(@form)">
+                            <xsl:if test="@form = 'long' or (@form = 'short' and not(../node()/@form = 'long')) or not(@form) or @form = 'print'">
                                 <xsl:value-of select="$active" />
                             </xsl:if>
                         </xsl:attribute>
