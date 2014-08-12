@@ -878,7 +878,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             </xsl:if>
         </xsl:variable>
         <xsl:choose>
-            <xsl:when test="not(string(./@ref)) and string(.) and not(contains(.,'itext('))">
+            <xsl:when test="not(string(./@ref)) and ( string(.) or string(./xf:output/@value) ) and not(contains(.,'itext('))">
                 <span lang="">                    
                     <xsl:attribute name="class">
                         <xsl:value-of select="concat($class, ' active')" />
