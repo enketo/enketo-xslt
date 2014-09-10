@@ -718,6 +718,24 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 </legend>
                 <div class="option-wrapper">
                     <xsl:choose>
+                        <xsl:when test="local-name() = 'trigger'">        
+                            <label>
+                                <input value="OK">
+                                    <xsl:call-template name="binding-attributes">
+                                        <xsl:with-param name="binding" select="$binding"/>
+                                        <xsl:with-param name="nodeset" select="$nodeset"/>
+                                        <xsl:with-param name="type" select="select_one"/>
+                                    </xsl:call-template>
+                                    <!-- override type that was just set, somewhat bad -->
+                                    <xsl:attribute name="type">
+                                        <xsl:value-of select="'radio'"/>
+                                    </xsl:attribute>
+                                </input>
+                                <span class="option-label active" lang="">
+                                    <xsl:value-of select="'OK'"/>
+                                </span>
+                            </label>
+                        </xsl:when>
                         <xsl:when test="not(./xf:itemset)">
                             <xsl:apply-templates select="xf:item" />
                         </xsl:when>
@@ -835,7 +853,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     </xsl:template>
 
     
-    <xsl:template match="xf:select | xf:select1">
+    <xsl:template match="xf:select | xf:select1 | xf:trigger">
         <xsl:variable name="nodeset_used">
             <xsl:call-template name="nodeset_used" />
         </xsl:variable>
@@ -918,53 +936,6 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <xsl:if test=". = 'true()'">
             <span class="required">*</span>
         </xsl:if>
-    </xsl:template>
-
-    <xsl:template match="xf:trigger">
-        <fieldset>
-        <!-- NOTE: TO IMPROVE PERFORMANCE, SUPPORT FOR RELATIVE NODESET BINDINGS HAS BEEN SWITCHED OFF 
-            To turn this back on:
-            - uncomment the variable nodeset_used
-            - revert back to commented-out code for variable nodeset
-            - revert back to commented-out code for variable binding
-            - all this takes place in the next 10 lines
-            <xsl:variable name="nodeset_used">
-                <xsl:call-template name="nodeset_used" />
-            </xsl:variable>
-        -->
-            <!--<xsl:if test="string($nodeset_used)">-->
-                <!-- the correct absolute nodeset as used in HTML -->
-                <xsl:variable name="nodeset">
-                <!--<xsl:call-template name="nodeset_absolute">
-                         <xsl:with-param name="nodeset_u" select="$nodeset_used"/>
-                     </xsl:call-template>-->
-                     <xsl:call-template name="nodeset_used" />
-                </xsl:variable>
-               
-                <!-- note that bindings are not required -->
-                <!--<xsl:variable name="binding" select="/h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset_used] | /h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset]" />-->
-                <xsl:if test="$nodeset">
-                    <xsl:variable name="binding" select="/h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset]" />
-                    <xsl:attribute name="class">
-                        <xsl:value-of select="'trigger '"/>
-                        <xsl:if test="$binding/@relevant">
-                            <xsl:value-of select="'or-branch pre-init'"/>
-                        </xsl:if>
-                    </xsl:attribute>
-                    <xsl:attribute name="name">
-                        <xsl:value-of select="$nodeset"/>
-                    </xsl:attribute>
-                    <!--<xsl:if test="/h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset]/@relevant">-->
-                    <xsl:if test="$binding/@relevant">
-                        <xsl:attribute name="data-relevant">
-                            <!--<xsl:value-of select="/h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset]/@relevant" />-->
-                            <xsl:value-of select="$binding/@relevant"/>
-                        </xsl:attribute>
-                    </xsl:if>
-                </xsl:if>
-        	<xsl:apply-templates select="xf:label | xf:hint" />
-        </fieldset>
-        <xsl:message>WARNING: Trigger(s) added but but with little support. Please test to make sure they do what you want.</xsl:message>
     </xsl:template>
 
      <xsl:template match="xf:output">
