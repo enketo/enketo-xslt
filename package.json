@@ -1,0 +1,27 @@
+{
+    "name": "enketo-xslt",
+    "version": "1.0.1",
+    "description": "XSL stylesheets for the Enketo XForm transformation",
+    "main": "",
+    "bugs": {
+        "url": "https://github.com/enketo/enketo-xslt/issues",
+        "email": "martijn@enketo.org"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/enketo/enketo-xslt.git"
+    },
+    "keywords": [
+        "Enketo",
+        "ODK",
+        "OpenRosa",
+        "XSLT",
+        "XSL",
+        "Transformer"
+    ],
+    "author": "Martijn van de Rijdt",
+    "license": "Apache2"
+}
