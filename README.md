@@ -7,7 +7,7 @@ XSLT sheets used to transform OpenRosa-flavoured XForms into an HTML form and XM
 ## Install for use in node.js app
 
 ```
-	npm install enketo-xslt --save
+npm install enketo-xslt --save
 ```
 
 ## Use in Node
