@@ -976,34 +976,36 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             </xsl:variable>
             <xsl:variable name="notext">
                 <xsl:value-of select="string-length(./xf:value[@form='long' or @form='short' or not(@form)]) = 0" /> 
-            </xsl:variable>      
+            </xsl:variable>
+            <!-- text labels get priority -->   
             <xsl:for-each select="./xf:value" >
+                <xsl:if test="not(@form = 'image' or @form = 'video' or @form = 'audio')">
+                    <span>
+                        <xsl:attribute name="lang">
+                            <xsl:value-of select="$lang"/>
+                        </xsl:attribute>
+                        <xsl:if test="string($class) or @form or string($active)">
+                            <xsl:attribute name="class">
+                                <xsl:value-of select="concat($class, ' ')" />
+                                <xsl:if test="@form">
+                                    <xsl:value-of select="concat(' or-form-', @form, ' ')" />
+                                </xsl:if>
+                                <xsl:if test="@form = 'long' or (@form = 'short' and not(../node()/@form = 'long')) or not(@form) or @form = 'print'">
+                                    <xsl:value-of select="$active" />
+                                </xsl:if>
+                            </xsl:attribute>
+                        </xsl:if>
+                        <xsl:attribute name="data-itext-id">
+                            <xsl:value-of select="$id"/>
+                        </xsl:attribute>
+                        <xsl:call-template name="text-content" />
+                    </span>
+                </xsl:if>
+            </xsl:for-each>
+            <!-- media labels in document order -->
+            <xsl:for-each select="./xf:value[@form = 'image' or @form = 'video' or @form = 'audio' and not($class = 'or-hint')]" >
                 <xsl:choose>
-                    <!-- text labels get priority -->
-                    <xsl:when test="not(@form = 'image' or @form = 'video' or @form = 'audio')">
-                        <span>
-                            <xsl:attribute name="lang">
-                                <xsl:value-of select="$lang"/>
-                            </xsl:attribute>
-                            <xsl:if test="string($class) or @form or string($active)">
-                                <xsl:attribute name="class">
-                                    <xsl:value-of select="concat($class, ' ')" />
-                                    <xsl:if test="@form">
-                                        <xsl:value-of select="concat(' or-form-', @form, ' ')" />
-                                    </xsl:if>
-                                    <xsl:if test="@form = 'long' or (@form = 'short' and not(../node()/@form = 'long')) or not(@form) or @form = 'print'">
-                                        <xsl:value-of select="$active" />
-                                    </xsl:if>
-                                </xsl:attribute>
-                            </xsl:if>
-                            <xsl:attribute name="data-itext-id">
-                                <xsl:value-of select="$id"/>
-                            </xsl:attribute>
-                            <xsl:call-template name="text-content" />
-                        </span>
-                    </xsl:when>
-                    <!-- media labels in document order -->
-                    <xsl:when test="@form = 'image' and not($class = 'or-hint')" >
+                    <xsl:when test="@form = 'image'" >
                         <!-- add empty span for option-labels that have no text, just an image, to support the new radio buttons and checkboxes -->
                         <xsl:if test="$notext = 'true'" >
                             <span>
@@ -1035,7 +1037,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                             <xsl:attribute name="alt">image</xsl:attribute>
                         </img>
                     </xsl:when>
-                    <xsl:when test="@form = 'audio' and not($class = 'or-hint')">
+                    <xsl:when test="@form = 'audio'">
                         <audio controls="controls">
                             <xsl:attribute name="lang">
                                 <xsl:value-of select="$lang"/>
@@ -1051,7 +1053,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                             <xsl:text>Your browser does not support HTML5 audio.</xsl:text>
                         </audio>
                     </xsl:when>
-                    <xsl:when test="@form = 'video' ">
+                    <xsl:when test="@form = 'video'">
                         <video controls="controls">
                             <xsl:attribute name="lang">
                                 <xsl:value-of select="$lang"/>
