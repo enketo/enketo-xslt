@@ -398,7 +398,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 
                 <xsl:if test="not(local-name() = 'item' or local-name() = 'bind')">
                     <xsl:apply-templates select="xf:label" />
-                    <xsl:if test="not($binding/@readonly = true())">
+                    <xsl:if test="not($binding/@readonly = 'true()')">
                         <xsl:apply-templates select="$binding/@required"/>
                     </xsl:if>
                 </xsl:if>
@@ -444,10 +444,10 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 
                 <xsl:if test="not(local-name() = 'item' or local-name() = 'bind')">
                     <xsl:apply-templates select="$binding/@jr:constraintMsg" />
-                    <xsl:if test="not($binding/@jr:constraintMsg or $binding/@readonly = true())">
+                    <xsl:if test="not($binding/@jr:constraintMsg or $binding/@readonly = 'true()')">
                         <xsl:call-template name="default-constraint-msg"/>
                     </xsl:if>
-                    <xsl:if test="$binding/@required = true() and $binding/@readonly != true()">
+                    <xsl:if test="$binding/@required = 'true()' and $binding/@readonly != 'true()'">
                         <xsl:call-template name="default-required-msg"/>
                     </xsl:if>
                 </xsl:if>
@@ -685,10 +685,10 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 <xsl:apply-templates select="xf:itemset" mode="labels"/>
             </xsl:if>
             <xsl:apply-templates select="$binding/@jr:constraintMsg" />
-            <xsl:if test="not($binding/@jr:constraintMsg or $binding/@readonly = true())">
+            <xsl:if test="not($binding/@jr:constraintMsg or $binding/@readonly = 'true()')">
                 <xsl:call-template name="default-constraint-msg"/>
             </xsl:if>
-            <xsl:if test="$binding/@required = true() and $binding/@readonly != true()">
+            <xsl:if test="$binding/@required = 'true()' and $binding/@readonly != 'true()'">
                 <xsl:call-template name="default-required-msg"/>
             </xsl:if>
         </label>
@@ -705,10 +705,10 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         -->
         <fieldset>
             <xsl:attribute name="class">
-                <xsl:if test="not($binding/@readonly = true())">
+                <xsl:if test="not($binding/@readonly = 'true()')">
                     <xsl:value-of select="'question '"/>
                 </xsl:if>
-                <xsl:if test="$binding/@readonly = true() ">
+                <xsl:if test="$binding/@readonly = 'true()' ">
                     <xsl:value-of select="'note '"/>
                 </xsl:if>
                 <xsl:if test="$binding/@relevant">
@@ -763,10 +763,10 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 </div>
             </fieldset>
             <xsl:apply-templates select="$binding/@jr:constraintMsg" />
-            <xsl:if test="not($binding/@jr:constraintMsg or $binding/@readonly = true())">
+            <xsl:if test="not($binding/@jr:constraintMsg or $binding/@readonly = 'true()')">
                 <xsl:call-template name="default-constraint-msg"/>
             </xsl:if>
-            <xsl:if test="$binding/@required = true() and $binding/@readonly != true()">
+            <xsl:if test="$binding/@required = 'true()' and $binding/@readonly != 'true()'">
                 <xsl:call-template name="default-required-msg"/>
             </xsl:if>
         </fieldset>
@@ -815,7 +815,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 <xsl:value-of select="./xf:value"/>
             </xsl:attribute>
         </xsl:if>
-        <xsl:if test="($binding/@required = true()) and (not(local-name() = 'bind'))">
+        <xsl:if test="($binding/@required = 'true()') and (not(local-name() = 'bind'))">
             <xsl:attribute name="required">required</xsl:attribute>
         </xsl:if>
         <xsl:if test="$binding/@constraint">
@@ -854,7 +854,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <xsl:if test="$xml-type = 'decimal'">
             <xsl:attribute name="step">any</xsl:attribute>
         </xsl:if>
-        <xsl:if test="$binding/@readonly = true() and not($html-input-type = 'hidden')" >
+        <xsl:if test="$binding/@readonly = 'true()' and not($html-input-type = 'hidden')" >
             <xsl:attribute name="readonly">readonly</xsl:attribute>
         </xsl:if>
         <xsl:if test="$html-input-type = 'file'">
@@ -961,7 +961,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     </xsl:template>
 
     <xsl:template match="xf:bind/@required">
-        <xsl:if test=". = true()">
+        <xsl:if test=". = 'true()'">
             <span class="required">*</span>
         </xsl:if>
     </xsl:template>
