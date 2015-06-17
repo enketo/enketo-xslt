@@ -1317,7 +1317,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     <xsl:template name="html_type">
         <xsl:param name="xml_type" />
         <xsl:choose>
-            <xsl:when test="local-name(..) = 'select1' or $xml_type='select1'">radio</xsl:when>
+            <xsl:when test="local-name(..) = 'select1' or $xml_type='select1' or local-name(.) = 'trigger'">radio</xsl:when>
             <xsl:when test="local-name(..) = 'select' or $xml_type='select'">checkbox</xsl:when>
             <xsl:when test="local-name() = 'bind'">hidden</xsl:when>
             <xsl:when test="$xml_type = 'dateTime'">datetime</xsl:when>
