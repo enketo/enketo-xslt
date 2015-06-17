@@ -1,6 +1,6 @@
 {
     "name": "enketo-xslt",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "XSL stylesheets for the Enketo XForm transformation",
     "main": "index.js",
     "bugs": {
