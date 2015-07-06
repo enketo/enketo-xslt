@@ -4,14 +4,12 @@ var sheets = require("../index"),
 describe('sheets', function() {
 
     it('should return an xslForm sheet', function() {
-        assert.equal(typeof sheets.xslForm, 'object');
-        assert.equal(sheets.xslForm instanceof Buffer, true);
+        assert.equal(typeof sheets.xslForm, 'string');
         assert.equal(sheets.xslForm.length > 0, true);
     });
 
     it('should return an xslForm sheet', function() {
-        assert.equal(sheets.xslModel instanceof Buffer, true);
-        assert.equal(sheets.xslModel instanceof Buffer, true);
+        assert.equal(typeof sheets.xslModel, 'string');
         assert.equal(sheets.xslModel.length > 0, true);
     });
 
