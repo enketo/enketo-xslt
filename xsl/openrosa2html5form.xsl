@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
- * Copyright 2013 Enketo LLC
- *
- * This file is part of enketo-xslt.
- *
- *  Enketo-xslt is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  Enketo-xslt is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with enketo-xslt.  If not, see <http://www.gnu.org/licenses/>.
- -->
-<!--
 *****************************************************************************************************
 XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 (exception: when non-IANA lang attributes are used the form will not validate (but that's not serious))
