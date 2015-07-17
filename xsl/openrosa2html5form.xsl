@@ -429,7 +429,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <xsl:if test="not($binding/@jr:constraintMsg or $binding/@readonly = 'true()')">
                         <xsl:call-template name="default-constraint-msg"/>
                     </xsl:if>
-                    <xsl:if test="$binding/@required = 'true()' and $binding/@readonly != 'true()'">
+                    <xsl:if test="$binding/@required = 'true()' and not($binding/@readonly = 'true()')">
                         <xsl:call-template name="default-required-msg"/>
                     </xsl:if>
                 </xsl:if>
@@ -670,7 +670,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:if test="not($binding/@jr:constraintMsg or $binding/@readonly = 'true()')">
                 <xsl:call-template name="default-constraint-msg"/>
             </xsl:if>
-            <xsl:if test="$binding/@required = 'true()' and $binding/@readonly != 'true()'">
+            <xsl:if test="$binding/@required = 'true()' and not($binding/@readonly = 'true()')">
                 <xsl:call-template name="default-required-msg"/>
             </xsl:if>
         </label>
@@ -748,7 +748,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:if test="not($binding/@jr:constraintMsg or $binding/@readonly = 'true()')">
                 <xsl:call-template name="default-constraint-msg"/>
             </xsl:if>
-            <xsl:if test="$binding/@required = 'true()' and $binding/@readonly != 'true()'">
+            <xsl:if test="$binding/@required = 'true()' and not($binding/@readonly = 'true()')">
                 <xsl:call-template name="default-required-msg"/>
             </xsl:if>
         </fieldset>
