@@ -690,6 +690,9 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 <xsl:if test="not($binding/@readonly = 'true()')">
                     <xsl:value-of select="'question '"/>
                 </xsl:if>
+                <xsl:if test="not(contains(@appearance, 'compact') or contains(@appearance, 'list-nolabel') or contains(@appearance, 'label') or contains(@appearance, 'likert')) or contains(@appearance, 'horizontal-compact')" >
+                    <xsl:value-of select="'simple-select '"/>
+                </xsl:if>
                 <xsl:if test="local-name() = 'trigger'">
                     <xsl:value-of select="'trigger '"/>
                 </xsl:if>
