@@ -120,7 +120,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <section class="form-logo">
                         <xsl:text> </xsl:text>
                     </section>
-                    <h3 id="form-title">
+                    <h3 dir="auto" id="form-title">
                         <xsl:choose>
                             <xsl:when test="/h:html/h:head/h:title">
                                 <xsl:value-of select="/h:html/h:head/h:title"/>
