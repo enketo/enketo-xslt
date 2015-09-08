@@ -174,14 +174,16 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                             <xsl:apply-templates select="/h:html/h:head/xf:model/xf:bind[@calculate]" />
                         </fieldset>
                     </xsl:if>
+                    <!--
                     <xsl:if test="/h:html/h:body//xf:output">
                         <xsl:message>WARNING: Output element(s) added but note that only /absolute/path/to/node is properly supported as "value" attribute of outputs. Please test to make sure they do what you want.</xsl:message>
                     </xsl:if>
                     <xsl:if test="/h:html/h:body//xf:itemset">
                         <xsl:message>WARNING: Itemset support is experimental. Make sure to test whether they do what you want.</xsl:message>
                     </xsl:if>
+                    -->
                     <xsl:if test="//xf:submission">
-                        <xsl:message>ERROR: Submissions element(s) not supported yet.</xsl:message>
+                        <xsl:message>ERROR: Submissions element(s) not supported.</xsl:message>
                     </xsl:if>
                 </form>
             </root>

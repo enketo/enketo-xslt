@@ -1,5 +1,7 @@
-Enketo XSLT [![Build Status](https://travis-ci.org/enketo/enketo-xslt.svg?branch=master)](https://travis-ci.org/enketo/enketo-xslt)
+Enketo XSLT 
 ===========
+
+[![npm version](https://badge.fury.io/js/enketo-xslt.svg)](http://badge.fury.io/js/enketo-xslt) [![Build Status](https://travis-ci.org/enketo/enketo-xslt.svg?branch=master)](https://travis-ci.org/enketo/enketo-xslt)
 
 XSLT sheets used to transform OpenRosa-flavoured XForms into an HTML form and XML instance.
 
