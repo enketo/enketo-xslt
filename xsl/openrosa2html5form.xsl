@@ -431,7 +431,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <xsl:if test="not($binding/@jr:constraintMsg or $binding/@readonly = 'true()')">
                         <xsl:call-template name="default-constraint-msg"/>
                     </xsl:if>
-                    <xsl:if test="$binding/@required = 'true()' and not($binding/@readonly = 'true()')">
+                    <xsl:if test="(string-length($binding/@required) > 0) and not($binding/@required = 'false()') and not($binding/@readonly = 'true()')">
                         <xsl:call-template name="default-required-msg"/>
                     </xsl:if>
                 </xsl:if>
@@ -672,7 +672,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:if test="not($binding/@jr:constraintMsg or $binding/@readonly = 'true()')">
                 <xsl:call-template name="default-constraint-msg"/>
             </xsl:if>
-            <xsl:if test="$binding/@required = 'true()' and not($binding/@readonly = 'true()')">
+            <xsl:if test="(string-length($binding/@required) > 0) and not($binding/@required = 'false()') and not($binding/@readonly = 'true()')">
                 <xsl:call-template name="default-required-msg"/>
             </xsl:if>
         </label>
@@ -756,7 +756,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:if test="not($binding/@jr:constraintMsg or $binding/@readonly = 'true()')">
                 <xsl:call-template name="default-constraint-msg"/>
             </xsl:if>
-            <xsl:if test="$binding/@required = 'true()' and not($binding/@readonly = 'true()')">
+            <xsl:if test="(string-length($binding/@required) > 0) and not($binding/@required = 'false()') and not($binding/@readonly = 'true()')">
                 <xsl:call-template name="default-required-msg"/>
             </xsl:if>
         </fieldset>
@@ -805,8 +805,10 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 <xsl:value-of select="./xf:value"/>
             </xsl:attribute>
         </xsl:if>
-        <xsl:if test="($binding/@required = 'true()') and (not(local-name() = 'bind'))">
-            <xsl:attribute name="required">required</xsl:attribute>
+        <xsl:if test="(string-length($binding/@required) > 0) and not($binding/@required = 'false()') and not(local-name() = 'bind')">
+            <xsl:attribute name="data-required">
+                <xsl:value-of select="$binding/@required" />
+            </xsl:attribute>
         </xsl:if>
         <xsl:if test="$binding/@constraint">
             <xsl:attribute name="data-constraint">
