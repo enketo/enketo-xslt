@@ -1052,6 +1052,9 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                         <xsl:choose>
                             <xsl:when test="../xf:value[@form = 'big-image']" >
                                 <a>
+                                    <xsl:attribute name="class">
+                                        <xsl:value-of select="'or-big-image'" />
+                                    </xsl:attribute>
                                     <xsl:attribute name="href">
                                         <xsl:value-of select="../xf:value[@form = 'big-image']"/>
                                     </xsl:attribute>
