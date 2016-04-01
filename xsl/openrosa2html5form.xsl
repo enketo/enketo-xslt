@@ -421,9 +421,8 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                         <xsl:with-param name="nodeset" select="$nodeset"/>
                         <xsl:with-param name="type" select="$type"/>
                     </xsl:call-template>
-                    <!-- avoid self-closing textarea -->
                     <xsl:if test="$element='textarea'">
-                        <xsl:text> </xsl:text>
+                        <xsl:text><!-- avoid self-closing textarea --> </xsl:text>
                     </xsl:if>
                 </xsl:element>
                 <xsl:if test="local-name() = 'item'">
@@ -995,15 +994,13 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     </xsl:otherwise>
                 </xsl:choose>    
             </xsl:attribute>
-            <xsl:text><!-- avoids self-closing tags on empty elements -->
-            </xsl:text>
+            <xsl:text><!-- avoids self-closing tags on empty elements --> </xsl:text>
         </span>
     </xsl:template>
 
     <xsl:template name="text-content">
         <xsl:if test="string-length(.) = 0">
-            <xsl:text><!-- avoids self-closing tags on empty elements -->
-            </xsl:text>
+            <xsl:text><!-- avoids self-closing tags on empty elements --> </xsl:text>
         </xsl:if>
         <xsl:apply-templates /><!-- call xf:output template if output is present -->
     </xsl:template>
