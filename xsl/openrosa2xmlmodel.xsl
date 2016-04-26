@@ -7,47 +7,45 @@ inside Enketo Smart Paper.
 *****************************************************************************************************
 -->
 
+<!-- 
+These namespace-declarations have been carefully crafted to produce a fairly clean output. 
+This includes the duplicate default namespace and xf: prefixed namespace. 
+Edit with care!
+-->
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xf="http://www.w3.org/2002/xforms" 
     xmlns:h="http://www.w3.org/1999/xhtml"
     xmlns:ev="http://www.w3.org/2001/xml-events" 
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:jr="http://openrosa.org/javarosa" 
+    xmlns="http://www.w3.org/2002/xforms"
     version="1.0"
     >
     <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" version="1.0" encoding="UTF-8" />
 
     <xsl:template match="/">
-    	<root>
-            <model>
-        	   <xsl:apply-templates select="//xf:model/xf:instance" />
+        <root>
+            <model xmlns="http://www.w3.org/2002/xforms">
+                <xsl:apply-templates select="//xf:model/xf:instance" />
             </model>
         </root>
     </xsl:template>
 
-    <xsl:template match="*">
-        <xsl:element name="{local-name()}">
-            <xsl:apply-templates select="node()|@*" />
-            <!-- if there is no meta node in the primary instance, create one with an instanceID-->
-            <xsl:if test="parent::xf:instance and parent::xf:instance = ../../../xf:model/xf:instance[1] and not(./xf:meta) and not(./jr:meta) and not(./meta)">
-                <xsl:element name="meta">
-                    <xsl:element name="instanceID" />
-                </xsl:element>
-            </xsl:if>
-            <!-- if there is an instance/*/meta node but not an instanceID node, create it -->
-            <xsl:if test="local-name() = 'meta' and ../../../xf:instance[1] and not(./xf:instanceID) and not(./jr:instanceID) and not(./instanceID)">
-                <xsl:element name="instanceID" />
-            </xsl:if>
-        </xsl:element>
+    <xsl:template match="xf:instance">
+        <instance>
+            <xsl:apply-templates select="@*"/>
+            <!-- 
+            This forces namespace declarations on the child of instance, which makes it easier to
+            serialize that child for a submission without duplications of namespace declarations.
+            -->
+            <xsl:copy-of select="node()" />
+        </instance>
     </xsl:template>
 
     <xsl:template match="@*">
-        <xsl:attribute name="{local-name()}" >
+        <xsl:attribute name="{name()}" >
             <xsl:value-of select="." />
         </xsl:attribute>
     </xsl:template>
-
-    <xsl:template match="comment()" />
 
 </xsl:stylesheet>
