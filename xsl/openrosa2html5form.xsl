@@ -10,6 +10,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xf="http://www.w3.org/2002/xforms"
+    xmlns:orx="http://openrosa.org/xforms"
     xmlns:h="http://www.w3.org/1999/xhtml"
     xmlns:ev="http://www.w3.org/2001/xml-events"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -784,11 +785,11 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             </xsl:otherwise>
         </xsl:choose>
         <xsl:attribute name="name">
-            <xsl:value-of select="$nodeset" />
+            <xsl:value-of select="normalize-space($nodeset)" />
         </xsl:attribute>
         <xsl:if test="$html-input-type = 'radio'">
             <xsl:attribute name="data-name">
-                <xsl:value-of select="$nodeset" />
+                <xsl:value-of select="normalize-space($nodeset)" />
             </xsl:attribute>
         </xsl:if>
         <xsl:if test="local-name() = 'item'">
@@ -831,8 +832,13 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:if>
+        <xsl:if test="$binding/@orx:for">
+            <xsl:attribute name="data-for">
+                <xsl:value-of select="normalize-space($binding/@orx:for)" />
+            </xsl:attribute>
+        </xsl:if>
         <xsl:attribute name="data-type-xml">
-            <xsl:value-of select="$xml-type"/>
+            <xsl:value-of select="$xml-type" /> 
         </xsl:attribute>
         <xsl:if test="$xml-type = 'decimal'">
             <xsl:attribute name="step">any</xsl:attribute>
