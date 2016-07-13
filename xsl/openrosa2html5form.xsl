@@ -984,7 +984,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     </xsl:template>
 
     <xsl:template match="xf:bind/@required">
-        <xsl:if test=". = 'true()'">
+        <xsl:if test="not(. = 'false()' or string-length(.) = 0)">
             <span class="required">*</span>
         </xsl:if>
     </xsl:template>

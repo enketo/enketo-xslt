@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[Unreleased]
+----------------------
+##### Changed
+- Show "*" for all questions with required expressions.
+
 [1.4.1] - 2016-05-20
 ----------------------
 ##### Fixed
