@@ -2,10 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-[Unreleased]
+[1.5.0] - 2016-07-13
 ----------------------
 ##### Changed
 - Show "*" for all questions with required expressions.
+- Switched to enketo namespace for "for" attribute.
 
 [1.4.1] - 2016-05-20
 ----------------------

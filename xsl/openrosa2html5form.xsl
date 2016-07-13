@@ -11,6 +11,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xf="http://www.w3.org/2002/xforms"
     xmlns:orx="http://openrosa.org/xforms"
+    xmlns:enk="http://enketo.org/xforms"
     xmlns:h="http://www.w3.org/1999/xhtml"
     xmlns:ev="http://www.w3.org/2001/xml-events"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -837,9 +838,9 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:if>
-        <xsl:if test="$binding/@orx:for">
+        <xsl:if test="$binding/@enk:for">
             <xsl:attribute name="data-for">
-                <xsl:value-of select="normalize-space($binding/@orx:for)" />
+                <xsl:value-of select="normalize-space($binding/@enk:for)" />
             </xsl:attribute>
         </xsl:if>
         <xsl:attribute name="data-type-xml">
