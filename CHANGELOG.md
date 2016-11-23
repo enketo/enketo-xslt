@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.6.0] - 2016-11-23
+----------------------
+##### Changed
+- Readonly questions now also get the "question" class. The "note" class is now complementary for readonly questions.
+
 [1.5.0] - 2016-07-13
 ----------------------
 ##### Changed

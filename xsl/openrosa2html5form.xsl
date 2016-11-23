@@ -365,7 +365,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             /h:html/h:body//xf:select1[@ref=$nodeset] ) )">
             <label>
                 <xsl:attribute name="class">
-                    <xsl:if test="(local-name() = 'input' or local-name() = 'upload') and not($binding/@readonly)">
+                    <xsl:if test="local-name() = 'input' or local-name() = 'upload'">
                         <xsl:value-of select="'question '"/>
                     </xsl:if>
                     <xsl:if test="(local-name() = 'input' or local-name() = 'upload') and $binding/@readonly">
@@ -627,9 +627,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         </xsl:variable>
         <label>
             <xsl:attribute name="class">
-                <xsl:if test="not($binding/@readonly = 'true()')">
-                    <xsl:value-of select="'question '"/>
-                </xsl:if>
+                <xsl:value-of select="'question '"/>
                 <xsl:if test="$binding/@readonly = 'true()' ">
                     <xsl:value-of select="'note '"/>
                 </xsl:if>
@@ -691,9 +689,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         -->
         <fieldset>
             <xsl:attribute name="class">
-                <xsl:if test="not($binding/@readonly = 'true()')">
-                    <xsl:value-of select="'question '"/>
-                </xsl:if>
+                <xsl:value-of select="'question '"/>
                 <xsl:if test="not(contains(@appearance, 'compact') or contains(@appearance, 'list-nolabel') or contains(@appearance, 'label') or contains(@appearance, 'likert')) or contains(@appearance, 'horizontal-compact')" >
                     <xsl:value-of select="'simple-select '"/>
                 </xsl:if>
