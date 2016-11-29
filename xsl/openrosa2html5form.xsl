@@ -118,7 +118,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                         </xsl:attribute>
                     </xsl:if>
                     <xsl:text>&#10;</xsl:text>
-                    <xsl:comment>This form was created by transforming a OpenRosa-flavored (X)Form using an XSLT sheet created by Enketo LLC.</xsl:comment>
+                    <xsl:comment>This form was created by transforming a OpenRosa-flavored (X)Form using an XSL stylesheet created by Enketo LLC.</xsl:comment>
                     <section class="form-logo">
                         <xsl:text> </xsl:text>
                     </section>
@@ -162,14 +162,14 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 
                     <xsl:apply-templates />
 
-                    <!-- create hidden input fields for preload items -->
+                    <!-- Create hidden input fields for preload items that do not have a form control. -->
                     <xsl:if test="/h:html/h:head/xf:model/xf:bind[@jr:preload]" >
                         <fieldset id="or-preload-items" style="display:none;">
                             <xsl:apply-templates select="/h:html/h:head/xf:model/xf:bind[@jr:preload]"/>
                         </fieldset>
                     </xsl:if>
 
-                    <!-- create hidden input fields for calculated items -->
+                    <!-- Create hidden input fields for calculated items that do not have a form control. -->
                     <!-- the template will exclude those that have an input field -->
                     <xsl:if test="/h:html/h:head/xf:model/xf:bind[@calculate]">
                         <fieldset id="or-calculated-items" style="display:none;">
@@ -356,11 +356,12 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <!--<xsl:variable name="binding" select="/h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset_used] | /h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset]" />-->
         <xsl:variable name="binding" select="/h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset]" />
        
-        <!-- if this is a bind element that also has an input, do nothing as it will be dealt with by the corresponding xf:input -->
-        <!-- note that this test is not fully spec-compliant. It will work with XLS-form produced forms that have no relative nodes 
+        <!-- If this is a bind element that also has an input, do nothing as it will be dealt with by the corresponding xf:input -->
+        <!-- Note that this test is not fully spec-compliant. It will work with XLS-form produced forms that have no relative nodes 
              and use the ref atribute only -->
         <xsl:if test="not( local-name() = 'bind' and ( 
             /h:html/h:body//xf:input[@ref=$nodeset] or 
+            /h:html/h:body//xf:upload[@ref=$nodeset] or 
             /h:html/h:body//xf:select[@ref=$nodeset] or 
             /h:html/h:body//xf:select1[@ref=$nodeset] ) )">
             <label>
@@ -820,19 +821,12 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             </xsl:attribute>
         </xsl:if>
         <xsl:if test="$binding/@jr:preload">
-            <xsl:choose>
-                <xsl:when test="not( $binding/@jr:preload = 'patient' )" >
-                    <xsl:attribute name="data-preload">
-                        <xsl:value-of select="./@jr:preload"/>
-                    </xsl:attribute>
-                    <xsl:attribute name="data-preload-params">
-                        <xsl:value-of select="./@jr:preloadParams"/>
-                    </xsl:attribute>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:message>NO SUPPORT: Patient preload item is not supported (ignored).</xsl:message>
-                </xsl:otherwise>
-            </xsl:choose>
+            <xsl:attribute name="data-preload">
+                <xsl:value-of select="$binding/@jr:preload"/>
+            </xsl:attribute>
+            <xsl:attribute name="data-preload-params">
+                <xsl:value-of select="$binding/@jr:preloadParams"/>
+            </xsl:attribute>
         </xsl:if>
         <xsl:if test="$binding/@enk:for">
             <xsl:attribute name="data-for">
