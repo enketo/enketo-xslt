@@ -799,7 +799,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 <xsl:value-of select="./xf:value"/>
             </xsl:attribute>
         </xsl:if>
-        <xsl:if test="(string-length($binding/@required) > 0) and not($binding/@required = 'false()') and not(local-name() = 'bind')">
+        <xsl:if test="(string-length($binding/@required) &gt; 0) and not($binding/@required = 'false()') and not(local-name() = 'bind')">
             <xsl:attribute name="data-required">
                 <xsl:value-of select="$binding/@required" />
             </xsl:attribute>
@@ -949,7 +949,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     <xsl:template name="constraint-and-required-msg">
         <xsl:param name="binding"/>
         <xsl:if test="not($binding/@readonly = 'true()')">
-            <xsl:if test="string-length($binding/@constraint) > 0">
+            <xsl:if test="string-length($binding/@constraint) &gt; 0">
                 <xsl:choose>
                     <xsl:when test="$binding/@jr:constraintMsg">
                         <xsl:apply-templates select="$binding/@jr:constraintMsg" />
@@ -959,7 +959,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:if>
-            <xsl:if test="(string-length($binding/@required) > 0) and not($binding/@required = 'false()')">
+            <xsl:if test="(string-length($binding/@required) &gt; 0) and not($binding/@required = 'false()')">
                 <xsl:choose>
                     <xsl:when test="$binding/@jr:requiredMsg">
                         <xsl:apply-templates select="$binding/@jr:requiredMsg" />
@@ -994,7 +994,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 <!-- this is just a quick hack! Need a robust itext processor that can make a distinction 
                 between id and node and figure out which instance to take node from with multiple instances -->
                 <xsl:choose>
-                    <xsl:when test="string-length($itext) > 0" >
+                    <xsl:when test="string-length($itext) &gt; 0" >
                         <xsl:value-of select="$itext"/>
                     </xsl:when>
                     <xsl:otherwise>
@@ -1192,7 +1192,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                                         )">-->
                             <!--<xsl:for-each select="descendant::*">
                                 <xsl:if test="local-name() = 'group' or local-name() = 'repeat'">-->
-                                <xsl:if test="string-length(@ref)>0 or string-length(@nodeset)>0">
+                                <xsl:if test="string-length(@ref) &gt; 0 or string-length(@nodeset) &gt; 0">
                                     <xsl:value-of select="concat(@ref,@nodeset, '/')" />
                                 </xsl:if>
                             <!--    </xsl:if>        
