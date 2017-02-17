@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.8.0] - 2016-02-17
+----------------------
+##### Added
+- Support for the accept attribute that has preference over the mediatype attribute.
+
 [1.7.0] - 2016-11-30
 ----------------------
 ##### Added

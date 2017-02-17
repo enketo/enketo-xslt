@@ -62,7 +62,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         </xsl:if>
         <xsl:for-each select="/h:html/h:head/xf:model/xf:bind">
             <xsl:if test="not(substring(./@nodeset, 1, 1) = '/')">
-                <xsl:message terminate="no">WARNING: Found binding(s) with relative (= bad!) nodeset attribute <!--on element: <xsl:value-of select="./@nodeset" />--> (form may work correctly if relative nodesets were used consistently throughout xml form in bindings as well as body, otherwise it will certainly be messed up). </xsl:message>
+                <xsl:message terminate="no">WARNING: Found binding(s) with relative nodeset attribute <!--on element: <xsl:value-of select="./@nodeset" />--> (form may work correctly if relative nodesets were used consistently throughout xml form in bindings as well as body, otherwise it will certainly be messed up). </xsl:message>
             </xsl:if>
         </xsl:for-each>
        <!--> <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
@@ -843,12 +843,16 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:attribute name="readonly">readonly</xsl:attribute>
         </xsl:if>
         <xsl:if test="$html-input-type = 'file'">
-            <xsl:if test="@mediatype">
-                <xsl:attribute name="accept">
-                    <xsl:value-of select="@mediatype" />
-                    <!-- image/*, video/* or audio/* -->
-               </xsl:attribute>
-            </xsl:if>
+            <xsl:attribute name="accept">
+                <xsl:choose>
+                    <xsl:when test="@accept">
+                        <xsl:value-of select="@accept" />
+                    </xsl:when>    
+                    <xsl:when test="@mediatype">
+                        <xsl:value-of select="@mediatype" />
+                    </xsl:when>
+                </xsl:choose>
+            </xsl:attribute>
         </xsl:if>
         <!--
             <xsl:if test="$html_type = 'image'" >
