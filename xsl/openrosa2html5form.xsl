@@ -1073,6 +1073,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                                     <xsl:with-param name="active" select="$active"/>
                                     <xsl:with-param name="notext" select="$notext"/>
                                     <xsl:with-param name="lang" select="$lang"/>
+                                    <xsl:with-param name="id" select="$id"/>
                                 </xsl:call-template>
                             </xsl:otherwise>
                         </xsl:choose>
@@ -1090,6 +1091,9 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                             <xsl:attribute name="src">
                                 <xsl:value-of select="." />
                             </xsl:attribute>
+                            <xsl:attribute name="data-itext-id">
+                                <xsl:value-of select="$id"/>
+                            </xsl:attribute>
                             <xsl:text>Your browser does not support HTML5 audio.</xsl:text>
                         </audio>
                     </xsl:when>
@@ -1105,6 +1109,9 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                             </xsl:if>
                             <xsl:attribute name="src">
                                 <xsl:value-of select="." />
+                            </xsl:attribute>
+                            <xsl:attribute name="data-itext-id">
+                                <xsl:value-of select="$id"/>
                             </xsl:attribute>
                             <xsl:text>Your browser does not support HTML5 video.</xsl:text>
                         </video>
@@ -1245,6 +1252,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <xsl:param name="active"/>
         <xsl:param name="notext" />
         <xsl:param name="lang"/>
+        <xsl:param name="id"/>
          <!-- add empty span for option-labels that have no text, just an image, to support the new radio buttons and checkboxes -->
          <xsl:if test="$notext = 'true'" >
              <span>
@@ -1273,6 +1281,9 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
              <xsl:attribute name="src">
                  <xsl:value-of select="." />
              </xsl:attribute>
+             <xsl:attribute name="data-itext-id">
+                <xsl:value-of select="$id"/>
+            </xsl:attribute>
              <xsl:attribute name="alt">image</xsl:attribute>
          </img>
     </xsl:template>
