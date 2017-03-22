@@ -369,7 +369,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <xsl:if test="local-name() = 'input' or local-name() = 'upload'">
                         <xsl:value-of select="'question '"/>
                     </xsl:if>
-                    <xsl:if test="(local-name() = 'input' or local-name() = 'upload') and $binding/@readonly">
+                    <xsl:if test="(local-name() = 'input' or local-name() = 'upload') and $binding/@readonly and not($binding/@calculate)">
                         <xsl:value-of select="'note '"/>
                     </xsl:if>
                     <xsl:if test="(local-name() = 'input' or local-name() = 'upload') and $binding/@relevant">
@@ -636,7 +636,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <label>
             <xsl:attribute name="class">
                 <xsl:value-of select="'question '"/>
-                <xsl:if test="$binding/@readonly = 'true()' ">
+                <xsl:if test="$binding/@readonly = 'true()' and not($binding/@calculate) ">
                     <xsl:value-of select="'note '"/>
                 </xsl:if>
                 <xsl:if test="./@appearance">
@@ -729,7 +729,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 <xsl:if test="local-name() = 'trigger'">
                     <xsl:value-of select="'trigger '"/>
                 </xsl:if>
-                <xsl:if test="$binding/@readonly = 'true()' ">
+                <xsl:if test="$binding/@readonly = 'true()' and not($binding/@calculate)">
                     <xsl:value-of select="'note '"/>
                 </xsl:if>
                 <xsl:if test="$binding/@relevant">
