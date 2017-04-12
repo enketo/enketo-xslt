@@ -2,22 +2,27 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-[1.9.1] - 2016-03-22
+[1.10.0] - 2017-04-12
+----------------------
+##### Changed
+- Repeat output now includes a repeat-info element. **Warning: major backwards-incompatible change** 
+
+[1.9.1] - 2017-03-22
 ----------------------
 ##### Changed
 - Only add 'note' class to readonly questions that do not have a calculate bind attribute.
 
-[1.9.0] - 2016-02-28
+[1.9.0] - 2017-02-28
 ----------------------
 ##### Added
 - Support for autocomplete appearance -> HTML datalist.
 
-[1.8.1] - 2016-02-23
+[1.8.1] - 2017-02-23
 ----------------------
 ##### Fixed
 - Media labels for itemsets are missing the data-itext-id attribute.
 
-[1.8.0] - 2016-02-17
+[1.8.0] - 2017-02-17
 ----------------------
 ##### Added
 - Support for the accept attribute that has preference over the mediatype attribute.
