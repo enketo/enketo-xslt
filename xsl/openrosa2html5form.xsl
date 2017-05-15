@@ -12,6 +12,8 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     xmlns:xf="http://www.w3.org/2002/xforms"
     xmlns:orx="http://openrosa.org/xforms"
     xmlns:enk="http://enketo.org/xforms"
+    xmlns:kb="http://kobotoolbox.org/xforms"
+    xmlns:esri="http://esri.com/xforms"
     xmlns:h="http://www.w3.org/1999/xhtml"
     xmlns:ev="http://www.w3.org/2001/xml-events"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -396,6 +398,8 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <xsl:call-template name="appearance" />
                 </xsl:attribute>
 
+                <xsl:apply-templates select="./@kb:image-customization"/>
+
                 <xsl:if test="not(local-name() = 'item' or local-name() = 'bind')">
                     <xsl:apply-templates select="xf:label" />
                     <xsl:if test="not($binding/@readonly = 'true()')">
@@ -655,6 +659,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <xsl:value-of select="' or-branch pre-init '"/>
                 </xsl:if>
             </xsl:attribute>
+            <xsl:apply-templates select="./@kb:image-customization"/>
             <xsl:apply-templates select="xf:label" />
             <xsl:apply-templates select="$binding/@required"/>
             <xsl:apply-templates select="xf:hint" />
@@ -748,6 +753,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <xsl:call-template name="appearance" />
                 </xsl:if>
             </xsl:attribute>
+            <xsl:apply-templates select="./@kb:image-customization"/>
             <fieldset>
                 <!--<xsl:if test="./xf:itemset">
                     <xsl:attribute name="data-itemset"/>
@@ -1043,6 +1049,14 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             </xsl:attribute>
             <xsl:text><!-- avoids self-closing tags on empty elements --> </xsl:text>
         </span>
+    </xsl:template>
+
+    <xsl:template match="@kb:image-customization">
+        <xsl:if test=".">
+            <xsl:attribute name="data-image-customization">
+                <xsl:value-of select="normalize-space(./@kb:image-customization)" />
+            </xsl:attribute>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template name="text-content">
