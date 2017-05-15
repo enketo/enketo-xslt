@@ -1054,7 +1054,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     <xsl:template match="@kb:image-customization">
         <xsl:if test=".">
             <xsl:attribute name="data-image-customization">
-                <xsl:value-of select="normalize-space(./@kb:image-customization)" />
+                <xsl:value-of select="normalize-space(.)" />
             </xsl:attribute>
         </xsl:if>
     </xsl:template>
