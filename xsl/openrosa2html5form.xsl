@@ -380,7 +380,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <xsl:if test="local-name() = 'input' or local-name() = 'upload'">
                         <xsl:value-of select="'question '"/>
                     </xsl:if>
-                    <xsl:if test="(local-name() = 'input' or local-name() = 'upload') and $binding/@readonly and not($binding/@calculate)">
+                    <xsl:if test="(local-name() = 'input' or local-name() = 'upload') and $binding/@readonly = 'true()' and not($binding/@calculate)">
                         <xsl:value-of select="'note '"/>
                     </xsl:if>
                     <xsl:if test="(local-name() = 'input' or local-name() = 'upload') and $binding/@relevant">
@@ -456,7 +456,8 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 
     <xsl:template match="xf:item" mode="select-option">
         <xsl:param name="tolerate-spaces" />
-        <xsl:variable name="label_translations">
+        <xsl:param name="readonly" />
+        <xsl:variable name="label_translations"> 
             <xsl:apply-templates select="xf:label" />
         </xsl:variable>
         <xsl:variable name="value">
@@ -469,8 +470,10 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             </xsl:if>
         </xsl:variable>
         <option>
-            <xsl:if test="2 &lt; 1"><!-- IF READONLY? -->
-                <xsl:attribute name="disabled"></xsl:attribute>
+            <xsl:if test="$readonly">
+                <xsl:attribute name="disabled">
+                    <xsl:value-of select="'disabled'"/>
+                </xsl:attribute>
             </xsl:if>
             <xsl:attribute name="value">
                 <xsl:choose>
@@ -644,6 +647,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <xsl:variable name="options">
             <xsl:apply-templates select="xf:item" mode="select-option">
                 <xsl:with-param name="tolerate-spaces" select="$type = 'select_one'" />
+                <xsl:with-param name="readonly" select="$binding/@readonly = 'true()'" />
             </xsl:apply-templates>
         </xsl:variable>
         <label>
@@ -887,6 +891,12 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:attribute name="step">any</xsl:attribute>
         </xsl:if>
         <xsl:if test="$binding/@readonly = 'true()' and not($html-input-type = 'hidden')" >
+            <!-- 
+                This also adds a readonly attribute to <select> which is not valid HTML.
+                We could add some logic to avoid that (the <option>s already get the disabled attribute),
+                but it's an extra line of defence and doesn't really hurt. The input change handler in 
+                Enketo Core ignores changes on a <select readonly>.
+            -->
             <xsl:attribute name="readonly">readonly</xsl:attribute>
         </xsl:if>
         <xsl:if test="$html-input-type = 'file'">

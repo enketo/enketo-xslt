@@ -2,10 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.11.2] - 2017-07-03
+---------------------
+##### Fixed
+- Readonly select options do not get the disabled attribute.
+
 [1.11.1] - 2017-05-15
 ----------------------
 ##### Fixed
-- Valu eof image-customization attribute not copied.
+- Value of image-customization attribute not copied.
 
 [1.11.0] - 2017-05-15
 ----------------------
