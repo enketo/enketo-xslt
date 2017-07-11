@@ -6,7 +6,6 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 (exception: when non-IANA lang attributes are used the form will not validate (but that's not serious))
 *****************************************************************************************************
 -->
-
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xf="http://www.w3.org/2002/xforms"
@@ -14,6 +13,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     xmlns:enk="http://enketo.org/xforms"
     xmlns:kb="http://kobotoolbox.org/xforms"
     xmlns:esri="http://esri.com/xforms"
+    xmlns:oc="http://openclinica.org/xforms"
     xmlns:h="http://www.w3.org/1999/xhtml"
     xmlns:ev="http://www.w3.org/2001/xml-events"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -24,7 +24,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     extension-element-prefixes="exsl str dyn"
     version="1.0"
     >
-
+    <xsl:param name="include-relevant-msg"/>
     <xsl:output method="xml" omit-xml-declaration="yes" encoding="UTF-8" indent="yes"/><!-- for xml: version="1.0" -->
 
     <xsl:variable name="upper-case" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
@@ -253,6 +253,9 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 </h4>
             </xsl:if>
             <xsl:apply-templates select="*[not(self::xf:label or self::xf:hint)]"/>
+            <xsl:call-template name="constraint-and-required-msg" >
+                <xsl:with-param name="binding" select="$binding"/>
+            </xsl:call-template>
             <xsl:text>
             </xsl:text>
         </section><xsl:comment>end of group <xsl:value-of select="@nodeset" /> </xsl:comment>
@@ -946,13 +949,16 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     </xsl:template>
     
 
-    <xsl:template match="xf:label | xf:hint | xf:bind/@jr:constraintMsg | xf:bind/@jr:requiredMsg">
+    <xsl:template match="xf:label | xf:hint | xf:bind/@jr:constraintMsg | xf:bind/@jr:requiredMsg | xf:bind/@oc:relevantMsg">
         <xsl:variable name="class">
             <xsl:if test="local-name() = 'constraintMsg'">
                 <xsl:value-of select="'or-constraint-msg'" />
             </xsl:if>
-             <xsl:if test="local-name() = 'requiredMsg'">
+            <xsl:if test="local-name() = 'requiredMsg'">
                 <xsl:value-of select="'or-required-msg'" />
+            </xsl:if>
+            <xsl:if test="local-name() = 'relevantMsg'">
+                <xsl:value-of select="'or-relevant-msg'" />
             </xsl:if>
             <xsl:if test="local-name() = 'hint'">
                 <xsl:value-of select="'or-hint'" />
@@ -1024,6 +1030,16 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     </xsl:otherwise>
                </xsl:choose>
             </xsl:if>
+            <xsl:if test="$include-relevant-msg = 1 and (string-length($binding/@relevant) &gt; 0) and not($binding/@relevant = 'true()')">
+                <xsl:choose>
+                    <xsl:when test="$binding/@oc:relevantMsg">
+                        <xsl:apply-templates select="$binding/@oc:relevantMsg" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                         <xsl:call-template name="default-relevant-msg"/>
+                    </xsl:otherwise>
+               </xsl:choose>
+            </xsl:if>
         </xsl:if>
     </xsl:template>
 
@@ -1033,6 +1049,10 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 
     <xsl:template name="default-required-msg">
         <span class="or-required-msg active" lang="" data-i18n="constraint.required">This field is required</span>
+    </xsl:template>
+
+    <xsl:template name="default-relevant-msg">
+        <span class="or-relevant-msg active" lang="" data-i18n="constraint.relevant">This value should be cleared</span>
     </xsl:template>
 
     <xsl:template match="xf:bind/@required">
