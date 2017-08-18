@@ -1470,12 +1470,11 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:when
                 test="$xml_type = 'decimal' or $xml_type = 'float' or $xml_type = 'double' or $xml_type = 'int' or $xml_type = 'integer'"
                 >number</xsl:when>
+            <xsl:when test="$xml_type = 'string' and contains(./@appearance, 'numbers')">tel</xsl:when>
             <xsl:when test="$xml_type = 'string'">text</xsl:when>
-            <!-- temporary -->
             <xsl:when test="$xml_type = 'barcode' or $xml_type = 'geopoint' or $xml_type = 'geotrace' or $xml_type = 'geoshape'" >
                 <xsl:value-of select="string('text')" />
             </xsl:when>
-            <!-- ********* -->
             <xsl:otherwise>
                 <xsl:value-of select="$error"/>
                 <xsl:message terminate="no">ERROR: Unsupported data type '<xsl:value-of select="$xml_type"/>' found.</xsl:message>
