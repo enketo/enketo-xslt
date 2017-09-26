@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.15.0] - 2017-09-26
+---------------------
+##### Added
+- Support for very custom 'kb:flash' body attribute (KoBoToolbox).
+
 [1.14.0] - 2017-09-20
 ---------------------
 ##### Added

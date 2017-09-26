@@ -761,6 +761,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 </xsl:if>
             </xsl:attribute>
             <xsl:apply-templates select="./@kb:image-customization"/>
+            <xsl:apply-templates select="./@kb:flash"/>
             <fieldset>
                 <!--<xsl:if test="./xf:itemset">
                     <xsl:attribute name="data-itemset"/>
@@ -1084,6 +1085,14 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     <xsl:template match="@kb:image-customization">
         <xsl:if test=".">
             <xsl:attribute name="data-image-customization">
+                <xsl:value-of select="normalize-space(.)" />
+            </xsl:attribute>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="@kb:flash">
+        <xsl:if test=".">
+            <xsl:attribute name="data-flash">
                 <xsl:value-of select="normalize-space(.)" />
             </xsl:attribute>
         </xsl:if>
