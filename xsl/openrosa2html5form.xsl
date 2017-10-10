@@ -232,6 +232,11 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <xsl:value-of select="'or-branch pre-init '"/>
                 </xsl:if>
                 <xsl:call-template name="appearance" />
+                <!-- Workaround for XLSForm limitation: add "compact" to group if the immediate repeat child has this appearance -->
+                <!-- This should actually be fixed in pyxform instead -->
+                <xsl:if test="contains(./xf:repeat/@appearance, 'compact')">
+                    <xsl:value-of select="'or-appearance-compact '"/>
+                </xsl:if>
             </xsl:attribute>
 
             <xsl:if test="string($nodeset)">
