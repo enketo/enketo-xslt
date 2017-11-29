@@ -1303,6 +1303,10 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 </xsl:if>
                 <xsl:value-of select="$path"/>
             </xsl:when>
+            <!-- if a group without @ref but with an immediate repeat child is used (ODK Build) -->
+            <xsl:when test="local-name() = 'group' and $input-node/xf:repeat/@nodeset">
+                <xsl:value-of select="$input-node/xf:repeat/@nodeset" />
+            </xsl:when>
             <!--<xsl:otherwise>
                 <xsl:message>ERROR: Could not determine node path for <xsl:value-of select="local-name($input-node)" /></xsl:message>
             </xsl:otherwise>-->

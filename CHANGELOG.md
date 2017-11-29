@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.15.2] - 2017-11-29
+---------------------
+##### Fixed
+- No support for groups without `ref` attribute with a repeat child.
+
 [1.15.1] - 2017-10-10
 ---------------------
 ##### Fixed
