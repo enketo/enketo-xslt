@@ -302,11 +302,6 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:attribute name="name">
                 <xsl:value-of select="$nodeset"/>
             </xsl:attribute>
-            <xsl:if test="string($binding/@constraint)">
-                <xsl:attribute name="data-constraint">
-                    <xsl:value-of select="$binding/@constraint"/>
-                </xsl:attribute>
-            </xsl:if>
             <xsl:if test="string(./xf:label/@ref) or string (./xf:label)">
                 <h4>
                     <xsl:apply-templates select="xf:label" />
