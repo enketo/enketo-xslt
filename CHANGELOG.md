@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.15.3] - 2017-12-20
+---------------------
+##### Fixed
+- Npm refuses to install 1.15.2, since December 19th 2017 or before. Trying to resolve this by publishing a new version without changes.
+
 [1.15.2] - 2017-11-29
 ---------------------
 ##### Fixed
