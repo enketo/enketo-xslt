@@ -237,6 +237,10 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 <xsl:if test="contains(./xf:repeat/@appearance, 'compact')">
                     <xsl:value-of select="'or-appearance-compact '"/>
                 </xsl:if>
+                <!-- same workaround for "no-collapse" -->
+                <xsl:if test="contains(./xf:repeat/@appearance, 'no-collapse')">
+                    <xsl:value-of select="'or-appearance-no-collapse '"/>
+                </xsl:if>
             </xsl:attribute>
 
             <xsl:if test="string($nodeset)">
