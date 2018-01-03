@@ -24,8 +24,7 @@
     ],
     "author": "Martijn van de Rijdt",
     "license": "Apache-2.0",
-    "dependencies": {
-        "mocha": "^4.1.0",
-        "test": "^0.6.0"
+    "devDependencies": {
+        "mocha": "^4.1.0"
     }
 }
