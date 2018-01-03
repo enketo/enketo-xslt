@@ -1,16 +1,18 @@
-var sheets = require('../index'),
-	assert = require('assert');
+/* eslint-env mocha */
 
-describe('sheets', function() {
+const sheets = require( '../index' );
+const assert = require( 'assert' );
 
-	it('should return an xslForm sheet', function() {
-		assert.equal(typeof sheets.xslForm, 'string');
-		assert.equal(sheets.xslForm.length > 0, true);
-	});
+describe( 'sheets', () => {
 
-	it('should return an xslModel sheet', function() {
-		assert.equal(typeof sheets.xslModel, 'string');
-		assert.equal(sheets.xslModel.length > 0, true);
-	});
+    it( 'should return an xslForm sheet', () => {
+        assert.equal( typeof sheets.xslForm, 'string' );
+        assert.equal( sheets.xslForm.length > 0, true );
+    } );
 
-});
+    it( 'should return an xslModel sheet', () => {
+        assert.equal( typeof sheets.xslModel, 'string' );
+        assert.equal( sheets.xslModel.length > 0, true );
+    } );
+
+} );
