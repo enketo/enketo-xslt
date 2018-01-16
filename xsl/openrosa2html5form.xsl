@@ -1019,37 +1019,35 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 
     <xsl:template name="constraint-and-required-msg">
         <xsl:param name="binding"/>
-        <xsl:if test="not($binding/@readonly = 'true()')">
-            <xsl:if test="string-length($binding/@constraint) &gt; 0">
-                <xsl:choose>
-                    <xsl:when test="$binding/@jr:constraintMsg">
-                        <xsl:apply-templates select="$binding/@jr:constraintMsg" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:call-template name="default-constraint-msg"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:if>
-            <xsl:if test="(string-length($binding/@required) &gt; 0) and not($binding/@required = 'false()')">
-                <xsl:choose>
-                    <xsl:when test="$binding/@jr:requiredMsg">
-                        <xsl:apply-templates select="$binding/@jr:requiredMsg" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                         <xsl:call-template name="default-required-msg"/>
-                    </xsl:otherwise>
-               </xsl:choose>
-            </xsl:if>
-            <xsl:if test="$include-relevant-msg = 1 and (string-length($binding/@relevant) &gt; 0) and not($binding/@relevant = 'true()')">
-                <xsl:choose>
-                    <xsl:when test="$binding/@oc:relevantMsg">
-                        <xsl:apply-templates select="$binding/@oc:relevantMsg" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                         <xsl:call-template name="default-relevant-msg"/>
-                    </xsl:otherwise>
-               </xsl:choose>
-            </xsl:if>
+        <xsl:if test="string-length($binding/@constraint) &gt; 0">
+            <xsl:choose>
+                <xsl:when test="$binding/@jr:constraintMsg">
+                    <xsl:apply-templates select="$binding/@jr:constraintMsg" />
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:call-template name="default-constraint-msg"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:if>
+        <xsl:if test="(string-length($binding/@required) &gt; 0) and not($binding/@required = 'false()')">
+            <xsl:choose>
+                <xsl:when test="$binding/@jr:requiredMsg">
+                    <xsl:apply-templates select="$binding/@jr:requiredMsg" />
+                </xsl:when>
+                <xsl:otherwise>
+                        <xsl:call-template name="default-required-msg"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:if>
+        <xsl:if test="$include-relevant-msg = 1 and (string-length($binding/@relevant) &gt; 0) and not($binding/@relevant = 'true()')">
+            <xsl:choose>
+                <xsl:when test="$binding/@oc:relevantMsg">
+                    <xsl:apply-templates select="$binding/@oc:relevantMsg" />
+                </xsl:when>
+                <xsl:otherwise>
+                        <xsl:call-template name="default-relevant-msg"/>
+                </xsl:otherwise>
+            </xsl:choose>
         </xsl:if>
     </xsl:template>
 

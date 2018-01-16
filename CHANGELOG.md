@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.16.1] - 2018-01-16
+---------------------
+##### Fixed
+- Constraint message not added for readonly questions.
+
 [1.16.0] - 2018-01-10
 ---------------------
 ##### Added
