@@ -923,6 +923,20 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     </xsl:when>
                 </xsl:choose>
             </xsl:attribute>
+            <!-- Note, this test captures new, new-front, new-rear -->
+            <xsl:if test="contains(@appearance, 'new')">
+                <xsl:attribute name="capture">
+                    <xsl:choose>
+                        <xsl:when test="contains(@appearance, 'new-front')">
+                            <xsl:value-of select="'user'"/>
+                        </xsl:when>
+                        <xsl:when test="contains(@appearance, 'new-rear')">
+                            <xsl:value-of select="'environment'"/>
+                        </xsl:when>
+                        <!-- else (if appearance="new"), the capture attribute remains empty, by design -->
+                    </xsl:choose>
+                </xsl:attribute>
+            </xsl:if>
         </xsl:if>
         <!--
             <xsl:if test="$html_type = 'image'" >
