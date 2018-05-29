@@ -350,7 +350,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         </xsl:if>
     </xsl:template>
 
-    <xsl:template match="xf:input | xf:upload | xf:item | xf:bind[@jr:preload] | xf:bind[@calculate]">
+    <xsl:template match="xf:input | xf:upload | xf:range | xf:item | xf:bind[@jr:preload] | xf:bind[@calculate]">
     <!-- NOTE: TO IMPROVE PERFORMANCE, SUPPORT FOR RELATIVE NODESET BINDINGS HAS BEEN SWITCHED OFF 
             To turn this back on:
             - uncomment the variable nodeset_used
@@ -912,6 +912,23 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             -->
             <xsl:attribute name="readonly">readonly</xsl:attribute>
         </xsl:if>
+        <xsl:if test="$html-input-type = 'range'">
+            <xsl:if test="@start">
+                <xsl:attribute name="min">
+                    <xsl:value-of select="@start" /> 
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@end">
+                <xsl:attribute name="max">   
+                    <xsl:value-of select="@end" /> 
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@step">
+                <xsl:attribute name="step">
+                    <xsl:value-of select="@step" /> 
+                </xsl:attribute>
+            </xsl:if>
+        </xsl:if>
         <xsl:if test="$html-input-type = 'file'">
             <xsl:attribute name="accept">
                 <xsl:choose>
@@ -938,11 +955,6 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 </xsl:attribute>
             </xsl:if>
         </xsl:if>
-        <!--
-            <xsl:if test="$html_type = 'image'" >
-            <xsl:attribute name="alt">image</xsl:attribute>
-            </xsl:if>
-        -->
     </xsl:template>
 
     
@@ -1496,6 +1508,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:when test="local-name(..) = 'select1' or $xml_type='select1' or local-name(.) = 'trigger'">radio</xsl:when>
             <xsl:when test="local-name(..) = 'select' or $xml_type='select'">checkbox</xsl:when>
             <xsl:when test="local-name() = 'bind'">hidden</xsl:when>
+            <xsl:when test="local-name() = 'range'">range</xsl:when>
             <xsl:when test="$xml_type = 'dateTime'">datetime</xsl:when>
             <xsl:when test="$xml_type = 'date'">date</xsl:when>
             <!-- note, it may not actually be possible to support 'file' with offline storage -->
