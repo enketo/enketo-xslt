@@ -384,13 +384,13 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             /h:html/h:body//xf:select1[@ref=$nodeset] ) )">
             <label>
                 <xsl:attribute name="class">
-                    <xsl:if test="local-name() = 'input' or local-name() = 'upload'">
+                    <xsl:if test="local-name() = 'input' or local-name() = 'upload' or local-name() = 'range'">
                         <xsl:value-of select="'question '"/>
                     </xsl:if>
-                    <xsl:if test="(local-name() = 'input' or local-name() = 'upload') and $binding/@readonly = 'true()' and not($binding/@calculate)">
+                    <xsl:if test="(local-name() = 'input' or local-name() = 'upload' or local-name() = 'range') and $binding/@readonly = 'true()' and not($binding/@calculate)">
                         <xsl:value-of select="'note '"/>
                     </xsl:if>
-                    <xsl:if test="(local-name() = 'input' or local-name() = 'upload' or local-name() = 'bind') and $binding/@relevant">
+                    <xsl:if test="(local-name() = 'input' or local-name() = 'upload' or local-name() = 'range' or local-name() = 'bind') and $binding/@relevant">
                         <xsl:value-of select="'or-branch pre-init '"/>
                     </xsl:if>
                     <xsl:if test="local-name() = 'bind'">
@@ -912,7 +912,8 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             -->
             <xsl:attribute name="readonly">readonly</xsl:attribute>
         </xsl:if>
-        <xsl:if test="$html-input-type = 'range'">
+        <xsl:if test="local-name() = 'range'">
+        <!-- note that due to the unhelpful default value behavior of input type=range in HTML, we use type=number -->
             <xsl:if test="@start">
                 <xsl:attribute name="min">
                     <xsl:value-of select="@start" /> 
@@ -1508,7 +1509,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:when test="local-name(..) = 'select1' or $xml_type='select1' or local-name(.) = 'trigger'">radio</xsl:when>
             <xsl:when test="local-name(..) = 'select' or $xml_type='select'">checkbox</xsl:when>
             <xsl:when test="local-name() = 'bind'">hidden</xsl:when>
-            <xsl:when test="local-name() = 'range'">range</xsl:when>
+            <xsl:when test="local-name() = 'range'">number</xsl:when>
             <xsl:when test="$xml_type = 'dateTime'">datetime</xsl:when>
             <xsl:when test="$xml_type = 'date'">date</xsl:when>
             <!-- note, it may not actually be possible to support 'file' with offline storage -->
