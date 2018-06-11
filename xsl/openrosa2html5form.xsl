@@ -11,6 +11,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     xmlns:xf="http://www.w3.org/2002/xforms"
     xmlns:orx="http://openrosa.org/xforms"
     xmlns:enk="http://enketo.org/xforms"
+    xmlns:odk="http://opendatakit.org/xforms"
     xmlns:kb="http://kobotoolbox.org/xforms"
     xmlns:esri="http://esri.com/xforms"
     xmlns:oc="http://openclinica.org/xforms"
@@ -373,7 +374,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <!-- note that bindings are not required -->
         <!--<xsl:variable name="binding" select="/h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset_used] | /h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset]" />-->
         <xsl:variable name="binding" select="/h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset]" />
-       
+
         <!-- If this is a bind element that also has an input, do nothing as it will be dealt with by the corresponding xf:input -->
         <!-- Note that this test is not fully spec-compliant. It will work with XLS-form produced forms that have no relative nodes 
              and use the ref atribute only -->
@@ -439,14 +440,21 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     </xsl:if>
                 </xsl:variable>
                 <xsl:element name="{$element}">
-                    <xsl:call-template name="binding-attributes">
-                        <xsl:with-param name="binding" select="$binding"/>
-                        <xsl:with-param name="nodeset" select="$nodeset"/>
-                        <xsl:with-param name="type" select="$type"/>
-                    </xsl:call-template>
-                    <xsl:if test="$element='textarea'">
-                        <xsl:text><!-- avoid self-closing textarea --> </xsl:text>
-                    </xsl:if>
+                    <xsl:choose>
+                        <xsl:when test="ancestor::odk:rank">
+                            <xsl:call-template name="rank-item-attributes"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:call-template name="binding-attributes">
+                                <xsl:with-param name="binding" select="$binding"/>
+                                <xsl:with-param name="nodeset" select="$nodeset"/>
+                                <xsl:with-param name="type" select="$type"/>
+                            </xsl:call-template>
+                            <xsl:if test="$element='textarea'">
+                                <xsl:text><!-- avoid self-closing textarea --> </xsl:text>
+                            </xsl:if>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:element>
                 <xsl:if test="local-name() = 'item'">
                     <xsl:apply-templates select="xf:label" />
@@ -527,10 +535,17 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     </xsl:attribute>
                     <!--<xsl:value-of select="'__LABEL__'" />-->
                     <input>
-                        <xsl:call-template name="binding-attributes">
-                            <xsl:with-param name="binding" select="$binding"/>
-                            <xsl:with-param name="nodeset" select="$nodeset"/>
-                        </xsl:call-template>
+                        <xsl:choose>
+                            <xsl:when test="ancestor::odk:rank">
+                                <xsl:call-template name="rank-item-attributes"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:call-template name="binding-attributes">
+                                    <xsl:with-param name="binding" select="$binding"/>
+                                    <xsl:with-param name="nodeset" select="$nodeset"/>
+                                </xsl:call-template>
+                            </xsl:otherwise>
+                        </xsl:choose>
                         <xsl:attribute name="value"></xsl:attribute>
                     </input>
                 </label>
@@ -777,6 +792,14 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <xsl:text>
                     </xsl:text>
                 </legend>
+                <xsl:if test="local-name() = 'rank'">
+                    <input class="rank">
+                        <xsl:call-template name="binding-attributes">
+                            <xsl:with-param name="binding" select="$binding"/>
+                            <xsl:with-param name="nodeset" select="$nodeset"/>
+                        </xsl:call-template>
+                    </input>
+                </xsl:if>
                 <div class="option-wrapper">
                     <xsl:choose>
                         <xsl:when test="local-name() = 'trigger'">        
@@ -785,12 +808,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                                     <xsl:call-template name="binding-attributes">
                                         <xsl:with-param name="binding" select="$binding"/>
                                         <xsl:with-param name="nodeset" select="$nodeset"/>
-                                        <xsl:with-param name="type" select="select_one"/>
                                     </xsl:call-template>
-                                    <!-- override type that was just set, somewhat bad -->
-                                    <xsl:attribute name="type">
-                                        <xsl:value-of select="'radio'"/>
-                                    </xsl:attribute>
                                 </input>
                                 <span class="option-label active" lang="">
                                     <xsl:value-of select="'OK'"/>
@@ -816,6 +834,23 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         </fieldset>
     </xsl:template>
     
+
+    <!-- 
+        Don't add any logic or names to odk:rank items
+    -->
+    <xsl:template name="rank-item-attributes">
+        <xsl:attribute name="value"> 
+            <xsl:value-of select="./xf:value"/>
+        </xsl:attribute>
+        <xsl:attribute name="class">
+            <xsl:value-of select="'ignore'"/>
+        </xsl:attribute>
+        <xsl:attribute name="type">
+            <xsl:value-of select="'text'"/>
+        </xsl:attribute>
+    </xsl:template>
+
+
     <!--
         adds binding attributes to the context node, meant for <input>, <select>, <textarea>
     -->
@@ -840,6 +875,9 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             </xsl:when>
             <xsl:when test="$type = 'select_one'"></xsl:when>
             <xsl:when test="$type = 'textarea'"></xsl:when>
+            <xsl:when test="$type = 'rank'">
+                <xsl:attribute name="type">rank</xsl:attribute>
+            </xsl:when>
             <xsl:otherwise>
                 <xsl:attribute name="type">
                     <xsl:value-of select="$html-input-type"/>
@@ -958,8 +996,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         </xsl:if>
     </xsl:template>
 
-    
-    <xsl:template match="xf:select | xf:select1 | xf:trigger">
+    <xsl:template match="xf:select | xf:select1 | odk:rank | xf:trigger">
         <xsl:variable name="nodeset_used">
             <xsl:call-template name="nodeset_used" />
         </xsl:variable>
@@ -970,7 +1007,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         </xsl:variable>
         <xsl:variable name="binding" select="/h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset_used] | /h:html/h:head/xf:model/xf:bind[@nodeset=$nodeset]" />
         <xsl:choose>
-            <xsl:when test="contains(@appearance, 'minimal') or contains(@appearance, 'autocomplete') or contains(@appearance, 'search')">
+            <xsl:when test="( local-name() = 'select' or local-name() = 'select1' ) and contains(@appearance, 'minimal') or contains(@appearance, 'autocomplete') or contains(@appearance, 'search')">
                 <xsl:call-template name="select-select">
                     <xsl:with-param name="nodeset" select="$nodeset" />
                     <xsl:with-param name="binding" select="$binding" />

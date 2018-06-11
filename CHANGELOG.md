@@ -2,10 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.19.0] - 2018-06-15
+---------------------
+##### Added
+- Support for Ranking widget.
+
 [1.18.0] - 2018-06-04
 ---------------------
 ##### Added
-- Support for Range widget
+- Support for Range widget.
 
 [1.17.0] - 2018-02-19
 ---------------------
