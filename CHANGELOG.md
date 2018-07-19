@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.19.2] - 2018-07-19
+---------------------
+##### Fixed
+- Randomize() doesn't work for itemsets that use itext() labels.
+
 [1.19.1] - 2018-07-19
 ---------------------
 ##### Changed

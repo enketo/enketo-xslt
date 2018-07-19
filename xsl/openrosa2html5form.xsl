@@ -565,7 +565,22 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <xsl:variable name="value-ref" select="./xf:value/@ref" />
         <xsl:variable name="label-ref" select="./xf:label/@ref" />
         <xsl:variable name="iwq" select="substring-before(substring-after(@nodeset, 'instance('),')/')" />
-        <xsl:variable name="instance-path" select="str:replace(substring-after(@nodeset, ')'), '/', '/xf:')" />
+        <!-- Needs to also deal with randomize(instance("id")/path/to/node), randomize(instance("id")/path/to/node, 3) -->
+        <!-- Super inelegant and not robust without regexp:match --> 
+        <xsl:variable name="instance-path-temp">
+            <xsl:choose>
+                <xsl:when test="contains(@nodeset, 'randomize(') and contains(@nodeset, ',')">
+                    <xsl:value-of select="substring-before(substring-after(@nodeset, ')'), ',')"/>
+                </xsl:when>
+                <xsl:when test="contains(@nodeset, 'randomize(')">
+                    <xsl:value-of select="substring-before(substring-after(@nodeset, ')'), ')')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="substring-after(@nodeset, ')')"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="instance-path" select="str:replace($instance-path-temp, '/', '/xf:')" />
         <xsl:variable name="instance-path-nofilter">
             <xsl:call-template name="strip-filter">
                 <xsl:with-param name="string" select="$instance-path"/>
