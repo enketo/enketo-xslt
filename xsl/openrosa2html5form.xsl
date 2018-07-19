@@ -11,7 +11,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     xmlns:xf="http://www.w3.org/2002/xforms"
     xmlns:orx="http://openrosa.org/xforms"
     xmlns:enk="http://enketo.org/xforms"
-    xmlns:odk="http://opendatakit.org/xforms"
+    xmlns:odk="http://www.opendatakit.org/xforms"
     xmlns:kb="http://kobotoolbox.org/xforms"
     xmlns:esri="http://esri.com/xforms"
     xmlns:oc="http://openclinica.org/xforms"
