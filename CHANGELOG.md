@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.19.3] - 2018-07-24
+---------------------
+##### Changed
+- Note class no longer applied in enketo-xlst.
+
 [1.19.2] - 2018-07-19
 ---------------------
 ##### Fixed
