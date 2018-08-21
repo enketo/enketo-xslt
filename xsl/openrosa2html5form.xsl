@@ -941,6 +941,16 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 <xsl:value-of select="normalize-space($binding/@oc:external)" />
             </xsl:attribute>
         </xsl:if>
+        <xsl:if test="$binding/@oc:constraint-type">
+            <xsl:attribute name="oc-constraint-type">
+                <xsl:value-of select="normalize-space($binding/@oc:constraint-type)" />
+            </xsl:attribute>
+        </xsl:if>
+        <xsl:if test="$binding/@oc:required-type">
+            <xsl:attribute name="oc-required-type">
+                <xsl:value-of select="normalize-space($binding/@oc:required-type)" />
+            </xsl:attribute>
+        </xsl:if>
         <xsl:attribute name="data-type-xml">
             <xsl:value-of select="$xml-type" /> 
         </xsl:attribute>
