@@ -112,7 +112,14 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     </xsl:if>
                     <xsl:if test="/h:html/h:head/xf:model/xf:submission/@method">
                         <xsl:attribute name="method">
-                            <xsl:value-of select="/h:html/h:head/xf:model/xf:submission/@method"/>
+                            <xsl:choose>
+                                <xsl:when test="/h:html/h:head/xf:model/xf:submission/@method = 'form-data-post'">
+                                     <xsl:value-of select="'post'"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select="/h:html/h:head/xf:model/xf:submission/@method"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
                         </xsl:attribute>
                     </xsl:if>
                     <xsl:if test="/h:html/h:head/xf:model/xf:submission/@base64RsaPublicKey">
