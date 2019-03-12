@@ -128,7 +128,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                         </xsl:attribute>
                     </xsl:if>
                     <xsl:text>&#10;</xsl:text>
-                    <xsl:comment>This form was created by transforming a OpenRosa-flavored (X)Form using an XSL stylesheet created by Enketo LLC.</xsl:comment>
+                    <xsl:comment>This form was created by transforming an OpenRosa-flavored (X)Form using an XSL stylesheet created by Enketo LLC.</xsl:comment>
                     <section class="form-logo">
                         <xsl:text> </xsl:text>
                     </section>
@@ -958,6 +958,11 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 <xsl:value-of select="normalize-space($binding/@oc:required-type)" />
             </xsl:attribute>
         </xsl:if>
+        <xsl:for-each select="$binding/@*[starts-with(name(), 'oc:constraint') and string-length(name()) > 13 and substring-before(name(), 'Msg') = '' ]" >
+            <xsl:attribute name="{concat('oc-', local-name(.))}">
+                <xsl:value-of select="normalize-space(.)" />
+            </xsl:attribute>
+        </xsl:for-each>
         <xsl:attribute name="data-type-xml">
             <xsl:value-of select="$xml-type" /> 
         </xsl:attribute>
@@ -1046,7 +1051,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     </xsl:template>
     
 
-    <xsl:template match="xf:label | xf:hint | xf:bind/@jr:constraintMsg | xf:bind/@jr:requiredMsg | xf:bind/@oc:relevantMsg">
+    <xsl:template match="xf:label | xf:hint | xf:bind/@jr:constraintMsg | xf:bind/@jr:requiredMsg | xf:bind/@oc:relevantMsg | xf:bind/@*[starts-with(name(), 'oc:constraint') and substring(name(), string-length(name()) - string-length('Msg') +1) = 'Msg']">
         <xsl:variable name="class">
             <xsl:if test="local-name() = 'constraintMsg'">
                 <xsl:value-of select="'or-constraint-msg'" />
@@ -1065,6 +1070,9 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             </xsl:if>
              <xsl:if test="local-name() = 'label' and local-name(..) = 'item' ">
                 <xsl:value-of select="'option-label'"/>
+            </xsl:if>
+            <xsl:if test="starts-with(name(), 'oc:constraint') and substring(name(), string-length(name()) - string-length('Msg') +1) = 'Msg' " >
+                <xsl:value-of select="concat('oc-', substring-before(local-name(.), 'Msg'), '-msg')"/>
             </xsl:if>
         </xsl:variable>
         <xsl:choose>
@@ -1122,7 +1130,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <xsl:apply-templates select="$binding/@jr:requiredMsg" />
                 </xsl:when>
                 <xsl:otherwise>
-                        <xsl:call-template name="default-required-msg"/>
+                    <xsl:call-template name="default-required-msg"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:if>
@@ -1132,10 +1140,13 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                     <xsl:apply-templates select="$binding/@oc:relevantMsg" />
                 </xsl:when>
                 <xsl:otherwise>
-                        <xsl:call-template name="default-relevant-msg"/>
+                    <xsl:call-template name="default-relevant-msg"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:if>
+        <xsl:for-each select="$binding/@*[starts-with(name(), 'oc:constraint') and substring(name(), string-length(name()) - string-length('Msg') +1) = 'Msg' ]" >
+            <xsl:apply-templates select="." />
+        </xsl:for-each>
     </xsl:template>
 
     <xsl:template name="default-constraint-msg">
