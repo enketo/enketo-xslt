@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.21.1] - 2019-05-17
+---------------------
+##### Changed
+- Convert deprecated select/1 appearances to new appearances.
+
 [1.21.0] - 2018-09-11
 ---------------------
 ##### Changed
