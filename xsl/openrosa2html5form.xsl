@@ -346,10 +346,33 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
     </xsl:template>
 
     <xsl:template name="appearance">
+        <xsl:variable name="select-type">
+            <xsl:if test="local-name() = 'select' or local-name() = 'select1'">
+                <xsl:value-of select="'true'"/>
+            </xsl:if>
+        </xsl:variable>
         <xsl:if test="@appearance">
             <xsl:variable name="appearances" select="str:tokenize(@appearance)" />
             <xsl:for-each select="exsl:node-set($appearances)">
-                <xsl:value-of select="concat('or-appearance-', normalize-space(translate(., $upper-case, $lower-case)), ' ')"/>
+                <xsl:variable name="appearance">
+                    <xsl:value-of select="normalize-space(translate(., $upper-case, $lower-case))"/>
+                </xsl:variable>
+                <xsl:value-of select="concat('or-appearance-', $appearance, ' ')"/>
+                <!-- convert deprecated appearances, but leave the deprecated ones -->
+                <xsl:if test="$select-type = 'true'">
+                    <xsl:if test="$appearance = 'horizontal'">
+                        <xsl:value-of select="'or-appearance-columns '" />
+                    </xsl:if>
+                    <xsl:if test="$appearance = 'horizontal-compact'">
+                        <xsl:value-of select="'or-appearance-columns-flex '" />
+                    </xsl:if>
+                    <xsl:if test="$appearance = 'compact'">
+                        <xsl:value-of select="'or-appearance-columns-flex or-appearance-no-buttons '" />
+                    </xsl:if>
+                    <xsl:if test="starts-with($appearance, 'compact-')">
+                        <xsl:value-of select="concat('or-appearance-columns-', substring-after($appearance, '-'), ' or-appearance-no-buttons ')" />
+                    </xsl:if>
+                </xsl:if>
             </xsl:for-each>
         </xsl:if>
         <!-- turn rows attribute into an appearance (which is what it should have been in the first place imho)-->
@@ -779,7 +802,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         <fieldset>
             <xsl:attribute name="class">
                 <xsl:value-of select="'question '"/>
-                <xsl:if test="not(contains(@appearance, 'compact') or contains(@appearance, 'list-nolabel') or contains(@appearance, 'label') or contains(@appearance, 'likert')) or contains(@appearance, 'horizontal-compact')" >
+                <xsl:if test="not(contains(@appearance, 'compact') or contains(@appearance, 'list-nolabel') or contains(@appearance, 'label') or contains(@appearance, 'likert') or contains(@appearance, 'horizontal-compact') or contains(@appearance, 'no-buttons'))" >
                     <xsl:value-of select="'simple-select '"/>
                 </xsl:if>
                 <xsl:if test="local-name() = 'trigger'">
