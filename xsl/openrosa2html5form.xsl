@@ -364,10 +364,10 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                         <xsl:value-of select="'or-appearance-columns '" />
                     </xsl:if>
                     <xsl:if test="$appearance = 'horizontal-compact'">
-                        <xsl:value-of select="'or-appearance-columns-flex '" />
+                        <xsl:value-of select="'or-appearance-columns-pack '" />
                     </xsl:if>
                     <xsl:if test="$appearance = 'compact'">
-                        <xsl:value-of select="'or-appearance-columns-flex or-appearance-no-buttons '" />
+                        <xsl:value-of select="'or-appearance-columns-pack or-appearance-no-buttons '" />
                     </xsl:if>
                     <xsl:if test="starts-with($appearance, 'compact-')">
                         <xsl:value-of select="concat('or-appearance-columns-', substring-after($appearance, '-'), ' or-appearance-no-buttons ')" />
