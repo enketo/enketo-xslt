@@ -981,6 +981,11 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 <xsl:value-of select="normalize-space($binding/@oc:required-type)" />
             </xsl:attribute>
         </xsl:if>
+        <xsl:if test="$binding/@orx:max-pixels">
+            <xsl:attribute name="data-max-pixels">
+                <xsl:value-of select="normalize-space($binding/@orx:max-pixels)" />
+            </xsl:attribute>
+        </xsl:if>
         <xsl:attribute name="data-type-xml">
             <xsl:value-of select="$xml-type" /> 
         </xsl:attribute>
