@@ -1240,7 +1240,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             </xsl:variable>
             <!-- text labels get priority -->   
             <xsl:for-each select="./xf:value" >
-                <xsl:if test="not(@form = 'image' or @form = 'video' or @form = 'audio' or @form='big-image')">
+                <xsl:if test="not(@form = 'image' or @form = 'video' or @form = 'audio' or @form='big-image' or @form='guidance')">
                     <span>
                         <xsl:attribute name="lang">
                             <xsl:value-of select="$lang"/>
@@ -1262,6 +1262,21 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                         <xsl:call-template name="text-content" />
                     </span>
                 </xsl:if>
+            </xsl:for-each>
+            <!-- guidance is next -->
+            <xsl:for-each select="./xf:value[@form = 'guidance']">
+                <details>
+                    <xsl:attribute name="lang">
+                        <xsl:value-of select="$lang"/>
+                    </xsl:attribute>
+                    <xsl:if test="string($class) or @form or string($active)">
+                        <xsl:attribute name="class">
+                            <xsl:value-of select="concat($class, ' or-form-', @form, ' ', $active)" />
+                        </xsl:attribute>
+                    </xsl:if>
+                    <summary data-i18n="hint.guidance.details">more details</summary>
+                    <xsl:call-template name="text-content" />
+                </details>
             </xsl:for-each>
             <!-- media labels in document order -->
             <xsl:for-each select="./xf:value[@form = 'image' or @form = 'video' or @form = 'audio' and not($class = 'or-hint')]" >
