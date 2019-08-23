@@ -200,7 +200,6 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 </form>
             </root>
         </xsl:template>
-
     <xsl:template match="h:head"/> <!--[not(self::xf:model/xf:bind[@jr:preload])]" />-->
 
     <xsl:template match="xf:group">
@@ -392,7 +391,6 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:call-template name="nodeset_used" />
         </xsl:variable>
     -->
-
         <!-- the correct absolute nodeset as used in HTML -->
         <xsl:variable name="nodeset">
              <!--<xsl:call-template name="nodeset_absolute">
@@ -413,86 +411,145 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             /h:html/h:body//xf:upload[@ref=$nodeset] or 
             /h:html/h:body//xf:select[@ref=$nodeset] or 
             /h:html/h:body//xf:select1[@ref=$nodeset] ) )">
-            <label>
-                <xsl:attribute name="class">
-                    <xsl:if test="local-name() = 'input' or local-name() = 'upload' or local-name() = 'range'">
-                        <xsl:value-of select="'question '"/>
-                    </xsl:if>
-                    <xsl:if test="(local-name() = 'input' or local-name() = 'upload' or local-name() = 'range' or local-name() = 'bind') and $binding/@relevant">
-                        <xsl:value-of select="'or-branch pre-init '"/>
-                    </xsl:if>
-                    <xsl:if test="local-name() = 'bind'">
-                        <xsl:value-of select="'calculation '"/>
-                    </xsl:if>
-                    <!--<xsl:if test="local-name() = 'item'">
-                        <xsl:value-of select="'clearfix '"/>
-                    </xsl:if>-->
-                    <xsl:if test="local-name() != 'item'">
-                        <xsl:value-of select="'non-select '"/>
-                    </xsl:if>
-                    <xsl:call-template name="appearance" />
-                </xsl:attribute>
-
-                <xsl:apply-templates select="./@kb:image-customization"/>
-
-                <xsl:if test="not(local-name() = 'item' or local-name() = 'bind')">
-                    <xsl:apply-templates select="xf:label" />
-                    <xsl:if test="not($binding/@readonly = 'true()')">
-                        <xsl:apply-templates select="$binding/@required"/>
-                    </xsl:if>
-                </xsl:if>
-                <!-- 
-                    note: Hints should actually be placed in title attribute (of input) as it is semantically nicer.
-                    However, to support multiple languages and parse all of them (to be available offline)
-                    they are placed in the label instead.
-                -->
-                <xsl:apply-templates select="xf:hint" />
-                
-                <xsl:variable name="appearance">
-                    <xsl:value-of select="translate(@appearance, $upper-case, $lower-case)"/>
-                </xsl:variable>
-                <xsl:variable name="element">
-                    <xsl:choose>
-                        <xsl:when test="$binding/@type = 'string' and contains($appearance, 'multi-line') or contains($appearance, 'multiline') or contains($appearance, 'text-area') or contains($appearance, 'textarea') or ./@rows">
-                            <xsl:value-of select="string('textarea')" />
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="string('input')" />
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
-                <xsl:variable name="type">
-                    <xsl:if test="$element = 'textarea'">
-                        <xsl:value-of select="$element"/>
-                    </xsl:if>
-                </xsl:variable>
-                <xsl:element name="{$element}">
-                    <xsl:choose>
-                        <xsl:when test="ancestor::odk:rank">
-                            <xsl:call-template name="rank-item-attributes"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:call-template name="binding-attributes">
-                                <xsl:with-param name="binding" select="$binding"/>
-                                <xsl:with-param name="nodeset" select="$nodeset"/>
-                                <xsl:with-param name="type" select="$type"/>
-                            </xsl:call-template>
-                            <xsl:if test="$element='textarea'">
-                                <xsl:text><!-- avoid self-closing textarea --> </xsl:text>
-                            </xsl:if>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:element>
-                <xsl:if test="local-name() = 'item'">
-                    <xsl:apply-templates select="xf:label" />
-                </xsl:if>
-
-                <xsl:if test="not(local-name() = 'item' or local-name() = 'bind')">
-                    <xsl:call-template name="constraint-and-required-msg" >
-                         <xsl:with-param name="binding" select="$binding"/>
+            <xsl:choose>
+                <xsl:when test="(local-name() = 'range' and  contains(@appearance, 'picker'))">
+                    <xsl:call-template name="select-select">
+                        <xsl:with-param name="nodeset" select="$nodeset" />
+                        <xsl:with-param name="binding" select="$binding" />
                     </xsl:call-template>
+                </xsl:when>
+                <xsl:otherwise>
+                    <label>
+                        <xsl:attribute name="class">
+                            <xsl:if test="local-name() = 'input' or local-name() = 'upload' or local-name() = 'range'">
+                                <xsl:value-of select="'question '"/>
+                            </xsl:if>
+                            <xsl:if test="(local-name() = 'input' or local-name() = 'upload' or local-name() = 'range' or local-name() = 'bind') and $binding/@relevant">
+                                <xsl:value-of select="'or-branch pre-init '"/>
+                            </xsl:if>
+                            <xsl:if test="local-name() = 'bind'">
+                                <xsl:value-of select="'calculation '"/>
+                            </xsl:if>
+                            <!--<xsl:if test="local-name() = 'item'">
+                                <xsl:value-of select="'clearfix '"/>
+                            </xsl:if>-->
+                            <xsl:if test="local-name() != 'item'">
+                                <xsl:value-of select="'non-select '"/>
+                            </xsl:if>
+                            <xsl:call-template name="appearance" />
+                        </xsl:attribute>
+
+                        <xsl:apply-templates select="./@kb:image-customization"/>
+
+                        <xsl:if test="not(local-name() = 'item' or local-name() = 'bind')">
+                            <xsl:apply-templates select="xf:label" />
+                            <xsl:if test="not($binding/@readonly = 'true()')">
+                                <xsl:apply-templates select="$binding/@required"/>
+                            </xsl:if>
+                        </xsl:if>
+                        <!-- 
+                            note: Hints should actually be placed in title attribute (of input) as it is semantically nicer.
+                            However, to support multiple languages and parse all of them (to be available offline)
+                            they are placed in the label instead.
+                        -->
+                        <xsl:apply-templates select="xf:hint" />
+                        
+                        <xsl:variable name="appearance">
+                            <xsl:value-of select="translate(@appearance, $upper-case, $lower-case)"/>
+                        </xsl:variable>
+                        <xsl:variable name="element">
+                            <xsl:choose>
+                                <xsl:when test="$binding/@type = 'string' and contains($appearance, 'multi-line') or contains($appearance, 'multiline') or contains($appearance, 'text-area') or contains($appearance, 'textarea') or ./@rows">
+                                    <xsl:value-of select="string('textarea')" />
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select="string('input')" />
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:variable>
+                        <xsl:variable name="type">
+                            <xsl:if test="$element = 'textarea'">
+                                <xsl:value-of select="$element"/>
+                            </xsl:if>
+                        </xsl:variable>
+                        <xsl:element name="{$element}">
+                            <xsl:choose>
+                                <xsl:when test="ancestor::odk:rank">
+                                    <xsl:call-template name="rank-item-attributes"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:call-template name="binding-attributes">
+                                        <xsl:with-param name="binding" select="$binding"/>
+                                        <xsl:with-param name="nodeset" select="$nodeset"/>
+                                        <xsl:with-param name="type" select="$type"/>
+                                    </xsl:call-template>
+                                    <xsl:if test="$element='textarea'">
+                                        <xsl:text><!-- avoid self-closing textarea --> </xsl:text>
+                                    </xsl:if>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:element>
+                        <xsl:if test="local-name() = 'item'">
+                            <xsl:apply-templates select="xf:label" />
+                        </xsl:if>
+
+                        <xsl:if test="not(local-name() = 'item' or local-name() = 'bind')">
+                            <xsl:call-template name="constraint-and-required-msg" >
+                                 <xsl:with-param name="binding" select="$binding"/>
+                            </xsl:call-template>
+                        </xsl:if>
+                    </label>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="*" mode="range-option-picker">
+        <xsl:param name="start" />
+        <xsl:param name="end" />
+        <xsl:param name="step" />
+        <xsl:param name="readonly" />
+        <xsl:param name="limit" />
+        <xsl:if test="not($start > $end)">
+            <option>
+                <xsl:if test="$readonly">
+                    <xsl:attribute name="disabled">
+                        <xsl:value-of select="'disabled'"/>
+                    </xsl:attribute>
                 </xsl:if>
-            </label>
+                <xsl:attribute name="value">
+                    <xsl:choose>
+                        <xsl:when test="string($start)">
+                            <xsl:value-of select="$start" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:message>ERROR: Could not determine value of select option.</xsl:message>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:attribute>
+                <xsl:value-of select="$start" />
+            </option>
+            <span>
+                <xsl:attribute name="data-option-value">
+                    <xsl:value-of select="$start" />
+                </xsl:attribute>
+                <xsl:value-of select="."/>
+            </span>
+            <xsl:variable name="next" select="$start + $step"/>
+            <xsl:choose>
+                <xsl:when test="$limit > 1">
+                    <xsl:apply-templates select="current()" mode="range-option-picker">
+                        <xsl:with-param name="start" select="$next"/>
+                        <xsl:with-param name="end" select="$end"/>
+                        <xsl:with-param name="step" select="$step"/>
+                        <xsl:with-param name="readonly" select="$readonly"/>
+                        <xsl:with-param name="limit" select="$limit - 1"/>
+                    </xsl:apply-templates>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:message>ERROR: Exceed maximum iterations allowed.</xsl:message>
+                </xsl:otherwise>
+            </xsl:choose>
         </xsl:if>
     </xsl:template>
 
@@ -701,18 +758,31 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                <xsl:when test="local-name() = 'select'">select_multiple</xsl:when>
                <xsl:otherwise>select_one</xsl:otherwise>
            </xsl:choose>
-        </xsl:variable> 
+        </xsl:variable>
         <xsl:variable name="element">
             <xsl:choose>
                 <xsl:when test="local-name() = 'select1' and (contains(@appearance, 'autocomplete') or contains(@appearance, 'search'))">datalist</xsl:when>
                 <xsl:otherwise>select</xsl:otherwise>
             </xsl:choose>
-        </xsl:variable> 
+        </xsl:variable>
         <xsl:variable name="options">
-            <xsl:apply-templates select="xf:item" mode="select-option">
-                <xsl:with-param name="tolerate-spaces" select="$type = 'select_one'" />
-                <xsl:with-param name="readonly" select="$binding/@readonly = 'true()'" />
-            </xsl:apply-templates>
+            <xsl:choose>
+                <xsl:when test="contains(@appearance, 'picker')">
+                    <xsl:apply-templates select="current()" mode="range-option-picker">
+                        <xsl:with-param name="start" select="@start" />
+                        <xsl:with-param name="end" select="@end" />
+                        <xsl:with-param name="step" select="@step" />
+                        <xsl:with-param name="readonly" select="$binding/@readonly = 'true()'" />
+                        <xsl:with-param name="limit" select="500" />
+                    </xsl:apply-templates>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates select="xf:item" mode="select-option">
+                        <xsl:with-param name="tolerate-spaces" select="$type = 'select_one'" />
+                        <xsl:with-param name="readonly" select="$binding/@readonly = 'true()'" />
+                    </xsl:apply-templates>
+                </xsl:otherwise>
+            </xsl:choose>
         </xsl:variable>
         <label>
             <xsl:attribute name="class">
@@ -838,7 +908,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                 </xsl:if>
                 <div class="option-wrapper">
                     <xsl:choose>
-                        <xsl:when test="local-name() = 'trigger'">        
+                        <xsl:when test="local-name() = 'trigger'">
                             <label>
                                 <input value="OK">
                                     <xsl:call-template name="binding-attributes">
