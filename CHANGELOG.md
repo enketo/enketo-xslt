@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.25.0] - 2019-10-16
+---------------------
+##### Changed
+- XML dateTime is now converted to HTML input type="datetime-local".
+
+##### Fixed
+- Rank output is a HTML syntax error.
+
 [1.24.0] - 2019-08-23
 ---------------------
 ##### Added

@@ -1,6 +1,6 @@
 {
     "name": "enketo-xslt",
-    "version": "1.24.0",
+    "version": "1.25.0",
     "description": "XSL stylesheets for the Enketo XForm transformation",
     "main": "index.js",
     "bugs": {
@@ -25,6 +25,6 @@
     "author": "Martijn van de Rijdt",
     "license": "Apache-2.0",
     "devDependencies": {
-        "mocha": "6.2.x"
+        "mocha": "^6.2.1"
     }
 }

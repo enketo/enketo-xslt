@@ -1683,11 +1683,12 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
             <xsl:when test="local-name(..) = 'select' or $xml_type='select'">checkbox</xsl:when>
             <xsl:when test="local-name() = 'bind'">hidden</xsl:when>
             <xsl:when test="local-name() = 'range'">number</xsl:when>
-            <xsl:when test="$xml_type = 'dateTime'">datetime</xsl:when>
+            <xsl:when test="$xml_type = 'dateTime'">datetime-local</xsl:when>
             <xsl:when test="$xml_type = 'date'">date</xsl:when>
             <!-- note, it may not actually be possible to support 'file' with offline storage -->
             <xsl:when test="$xml_type = 'binary'">file</xsl:when>
             <xsl:when test="$xml_type = 'time'">time</xsl:when>
+            <xsl:when test="$xml_type = 'rank'">text</xsl:when>
             <xsl:when
                 test="$xml_type = 'decimal' or $xml_type = 'float' or $xml_type = 'double' or $xml_type = 'int' or $xml_type = 'integer'"
                 >number</xsl:when>
