@@ -5,6 +5,8 @@ Enketo XSLT
 
 XSLT sheets used to transform OpenRosa-flavoured XForms into an HTML form and XML instance.
 
+# This repo was moved inside [enketo-transformer](https://github.com/enketo/enketo-transformer) in December 2019. It is no longer under development as a separate module.
+
 ### Use with npm
 
 ```
